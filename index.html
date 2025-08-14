@@ -1,0 +1,1533 @@
+import React, { useState } from 'react';
+import { 
+  Calculator, Navigation, BarChart3, TrendingUp, DollarSign, Users, MapPin, Crown, Lock, 
+  Home, Calendar, Clock, Target, Zap, Star, CheckCircle, ArrowUp, ArrowDown, Search,
+  Plus, RefreshCw, Bot, Palette, Globe, Code
+} from 'lucide-react';
+
+export default function CleanBusinessPro() {
+  const [isPremium, setIsPremium] = useState(false);
+  const [activeModule, setActiveModule] = useState('dashboard');
+  const [selectedView, setSelectedView] = useState('daily');
+  const [marketZipCode, setMarketZipCode] = useState('19102');
+  const [marketRadius, setMarketRadius] = useState('5');
+  const [calendarSyncStatus, setCalendarSyncStatus] = useState('disconnected');
+  const [showUpgradeCTA, setShowUpgradeCTA] = useState(true);
+  const [selectedStory, setSelectedStory] = useState(0);
+
+  // Quote Calculator State
+  const [quoteFormData, setQuoteFormData] = useState({
+    propertyType: 'residential',
+    squareFootage: '',
+    serviceType: 'standard',
+    frequency: 'one-time',
+    addOns: [],
+    hasPets: false
+  });
+
+  // ROI Calculator State
+  const [roiCalculator, setRoiCalculator] = useState({
+    currentJobs: 25,
+    avgJobValue: 150,
+    hoursPerWeek: 45,
+    fuelCostPerWeek: 80,
+    showResults: false
+  });
+
+  const addOnServices = [
+    { id: 'inside-fridge', name: 'Inside Refrigerator', price: 15 },
+    { id: 'inside-oven', name: 'Inside Oven', price: 30 },
+    { id: 'windows', name: 'Window Tracks', price: 25 },
+    { id: 'basement', name: 'Basement Cleaning', price: 50 },
+    { id: 'garage', name: 'Garage Cleaning', price: 40 },
+    { id: 'cabinets', name: 'Inside Cabinets', price: 35 }
+  ];
+
+  const crews = [
+    { id: 1, name: 'Team Alpha', members: ['Sarah', 'Maria'], color: '#3B82F6' },
+    { id: 2, name: 'Team Beta', members: ['Lisa', 'Ana', 'Carmen'], color: '#10B981' },
+    { id: 3, name: 'Team Gamma', members: ['Rosa', 'Elena'], color: '#8B5CF6' }
+  ];
+
+  const getCompetitorsByZip = (zipCode) => {
+    const competitorData = {
+      '19102': [
+        {
+          id: 1,
+          name: "CleanPro Philadelphia",
+          location: "Center City",
+          smallApt: 110,
+          mediumHome: 150,
+          largeHome: 220,
+          reviewScore: 4.8,
+          reviewCount: 342,
+          marketShare: 18,
+          distance: 0.3
+        },
+        {
+          id: 2,
+          name: "Philly Maid Service",
+          location: "Rittenhouse Square",
+          smallApt: 125,
+          mediumHome: 165,
+          largeHome: 240,
+          reviewScore: 4.6,
+          reviewCount: 198,
+          marketShare: 15,
+          distance: 0.8
+        }
+      ],
+      '19147': [
+        {
+          id: 3,
+          name: "South Philly Clean",
+          location: "South Philadelphia",
+          smallApt: 95,
+          mediumHome: 130,
+          largeHome: 190,
+          reviewScore: 4.4,
+          reviewCount: 156,
+          marketShare: 22,
+          distance: 0.5
+        }
+      ]
+    };
+    return competitorData[zipCode] || competitorData['19102'];
+  };
+
+  const competitors = getCompetitorsByZip(marketZipCode);
+
+  const successStories = [
+    {
+      name: "Maria Rodriguez",
+      business: "Sparkle Clean LLC",
+      location: "Chicago, IL",
+      image: "👩‍💼",
+      beforeRevenue: 4200,
+      afterRevenue: 8900,
+      timesSaved: "15 hours/week",
+      quote: "CleanBusiness Pro doubled my revenue in 4 months. The route optimizer alone saves me 3 hours daily - that's 3 more jobs I can book!",
+      results: [
+        "Revenue increased from $4,200 to $8,900/month",
+        "Reduced drive time by 65%", 
+        "Added 12 new recurring clients",
+        "Eliminated paper scheduling completely"
+      ]
+    },
+    {
+      name: "James Thompson", 
+      business: "Elite Cleaning Services",
+      location: "Austin, TX",
+      image: "👨‍💼",
+      beforeRevenue: 6800,
+      afterRevenue: 12400,
+      timesSaved: "20 hours/week",
+      quote: "The competitive analysis feature helped me price 30% higher than competitors while staying booked solid. Game changer!",
+      results: [
+        "Increased pricing by 30% with no client loss",
+        "Expanded to 3 new neighborhoods", 
+        "Hired 2 additional crew members",
+        "Automated 90% of administrative tasks"
+      ]
+    },
+    {
+      name: "Lisa Chen",
+      business: "Premium Home Care", 
+      location: "San Francisco, CA",
+      image: "👩‍🦱",
+      beforeRevenue: 8900,
+      afterRevenue: 16800,
+      timesSaved: "25 hours/week",
+      quote: "I was skeptical about $50/month, but I made that back in fuel savings alone in the first week. Best investment ever!",
+      results: [
+        "Doubled team size from 2 to 4 cleaners",
+        "Reduced fuel costs by $340/month",
+        "Increased client retention to 95%",
+        "Launched premium service tier"
+      ]
+    }
+  ];
+
+  const weeklyAppointments = [
+    {
+      id: 1,
+      client: 'Johnson Residence',
+      address: '123 Main St, Philadelphia, PA 19102',
+      day: 'Monday',
+      timeWindow: '9:00 AM - 11:00 AM',
+      duration: 2,
+      price: 150,
+      crew: 1,
+      zone: 'Center City'
+    },
+    {
+      id: 2,
+      client: 'Smith Family Home',
+      address: '789 Pine St, Philadelphia, PA 19147',
+      day: 'Tuesday',
+      timeWindow: '10:00 AM - 12:30 PM',
+      duration: 2.5,
+      price: 185,
+      crew: 2,
+      zone: 'South Philly'
+    },
+    {
+      id: 3,
+      client: 'Tech Startup Office',
+      address: '567 N 2nd St, Philadelphia, PA 19130',
+      day: 'Wednesday',
+      timeWindow: '7:00 AM - 10:00 AM',
+      duration: 3,
+      price: 320,
+      crew: 1,
+      zone: 'Northern Liberties'
+    }
+  ];
+
+  const revenueData = {
+    current: {
+      revenue: 52340,
+      growth: 15.2,
+      jobs: 324,
+      avgJobValue: 161.54
+    },
+    monthly: [
+      { month: 'Jan', revenue: 38500 },
+      { month: 'Feb', revenue: 42100 },
+      { month: 'Mar', revenue: 39800 },
+      { month: 'Apr', revenue: 44200 },
+      { month: 'May', revenue: 48800 },
+      { month: 'Jun', revenue: 52340 }
+    ]
+  };
+
+  const pricingTiers = [
+    {
+      id: 'basic',
+      name: 'Basic Plan',
+      price: 0,
+      period: 'Free Forever',
+      features: [
+        'Basic Dashboard',
+        'View sample quotes',
+        'Business insights',
+        'Email support'
+      ],
+      limitations: [
+        'No quote generation',
+        'No route optimization',
+        'No competitive analysis'
+      ]
+    },
+    {
+      id: 'pro',
+      name: 'Pro Plan',
+      price: 50,
+      period: 'per month',
+      popular: true,
+      features: [
+        'Professional Quote Calculator',
+        'Unlimited quote generation',
+        'Google Calendar Integration',
+        'AI Route Optimization',
+        'Zip Code Market Analysis',
+        'Weekly Schedule Planning',
+        'Competitive Intelligence',
+        'Priority support'
+      ]
+    },
+    {
+      id: 'enterprise',
+      name: 'Enterprise Plan',
+      price: 750,
+      period: 'per month',
+      features: [
+        'Everything in Pro',
+        'Fully Custom AI Website',
+        'Professional setup & design',
+        '24/7 dedicated support',
+        'Personal account representative',
+        'Multi-location management',
+        'Monthly strategy calls'
+      ]
+    }
+  ];
+
+  const calculateQuote = () => {
+    const sqft = parseInt(quoteFormData.squareFootage) || 0;
+    let basePrice = 0;
+
+    if (sqft <= 900) basePrice = 120;
+    else if (sqft <= 1200) basePrice = 140;
+    else if (sqft <= 1600) basePrice = 170;
+    else if (sqft <= 2000) basePrice = 200;
+    else basePrice = 230;
+
+    const serviceMultipliers = {
+      'standard': 1.0,
+      'deep': 1.6,
+      'move-in-out': 1.9,
+      'post-construction': 2.2
+    };
+
+    basePrice *= serviceMultipliers[quoteFormData.serviceType] || 1.0;
+
+    const addOnTotal = quoteFormData.addOns.reduce((total, addOnId) => {
+      const addOn = addOnServices.find(service => service.id === addOnId);
+      return total + (addOn ? addOn.price : 0);
+    }, 0);
+
+    const frequencyDiscounts = {
+      'one-time': 0,
+      'weekly': 0.15,
+      'bi-weekly': 0.10,
+      'monthly': 0.05
+    };
+
+    const discount = frequencyDiscounts[quoteFormData.frequency] || 0;
+    let subtotal = basePrice + addOnTotal;
+    
+    if (quoteFormData.hasPets) {
+      subtotal = subtotal * 1.05;
+    }
+    
+    const finalPrice = subtotal * (1 - discount);
+    return Math.round(finalPrice);
+  };
+
+  const calculateROI = () => {
+    const { currentJobs, avgJobValue, hoursPerWeek, fuelCostPerWeek } = roiCalculator;
+    
+    const timeSavedHours = hoursPerWeek * 0.35;
+    const additionalJobs = Math.floor(timeSavedHours / 2);
+    const fuelSavings = fuelCostPerWeek * 0.30;
+    const additionalRevenue = additionalJobs * avgJobValue * 4;
+    const totalMonthlySavings = (fuelSavings * 4) + additionalRevenue;
+    const roi = ((totalMonthlySavings - 50) / 50) * 100;
+    
+    return {
+      timeSaved: timeSavedHours,
+      additionalJobs,
+      fuelSavings: fuelSavings * 4,
+      additionalRevenue,
+      totalMonthlySavings,
+      roi: Math.round(roi),
+      paybackDays: Math.ceil(50 / (totalMonthlySavings / 30))
+    };
+  };
+
+  const quote = quoteFormData.squareFootage ? calculateQuote() : null;
+
+  const PremiumFeatureOverlay = ({ children, feature, tier = 'pro' }) => {
+    if (isPremium) return children;
+    
+    const targetTier = pricingTiers.find(t => t.id === tier);
+    
+    return (
+      <div className="relative">
+        <div className="blur-sm pointer-events-none">{children}</div>
+        <div className="absolute inset-0 flex items-center justify-center bg-white bg-opacity-95 rounded-xl">
+          <div className="text-center p-6 max-w-sm">
+            <Lock className="w-12 h-12 text-gray-400 mx-auto mb-3" />
+            <h4 className="text-lg font-semibold text-gray-800 mb-2">{targetTier.name} Feature</h4>
+            <p className="text-sm text-gray-600 mb-4">{feature}</p>
+            <button 
+              onClick={() => setIsPremium(true)}
+              className="px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg hover:from-blue-700 hover:to-purple-700 transition-all font-medium"
+            >
+              Upgrade to {targetTier.name} - ${targetTier.price}/month
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  const SimpleChart = ({ data, color = '#3B82F6' }) => {
+    const maxValue = Math.max(...data.map(d => d.revenue));
+    
+    return (
+      <div className="space-y-2">
+        {data.map((item, index) => (
+          <div key={index} className="flex items-center gap-3">
+            <div className="w-16 text-xs text-gray-600 text-right font-medium">
+              {item.month}
+            </div>
+            <div className="flex-1 bg-gray-200 rounded-full h-5 relative">
+              <div 
+                className="h-5 rounded-full flex items-center justify-end pr-3"
+                style={{ 
+                  width: `${(item.revenue / maxValue) * 100}%`,
+                  backgroundColor: color
+                }}
+              >
+                <span className="text-white text-xs font-semibold">
+                  {item.revenue.toLocaleString()}
+                </span>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    );
+  };
+
+  const MetricCard = ({ title, value, change, icon: Icon, color }) => (
+    <div className="bg-white rounded-xl p-6 shadow-sm border hover:shadow-md transition-shadow">
+      <div className="flex items-center gap-3 mb-3">
+        <div className={`p-3 bg-${color}-100 rounded-lg`}>
+          <Icon className={`w-6 h-6 text-${color}-600`} />
+        </div>
+        <div className="flex-1">
+          <span className="text-sm font-medium text-gray-600">{title}</span>
+          <div className="text-2xl font-bold text-gray-800">{value}</div>
+        </div>
+      </div>
+      {change && (
+        <div className={`text-sm ${change > 0 ? 'text-green-600' : 'text-red-600'} flex items-center gap-1`}>
+          {change > 0 ? <ArrowUp className="w-3 h-3" /> : <ArrowDown className="w-3 h-3" />}
+          {Math.abs(change)}% vs last month
+        </div>
+      )}
+    </div>
+  );
+
+  return (
+    <div className="max-w-7xl mx-auto p-6 bg-gradient-to-br from-slate-50 to-blue-50 min-h-screen">
+      {/* Header */}
+      <div className="mb-8">
+        <div className="flex items-center justify-between mb-6">
+          <div className="flex items-center gap-4">
+            <div className="bg-gradient-to-r from-blue-600 to-purple-600 p-3 rounded-xl shadow-lg">
+              <Home className="w-8 h-8 text-white" />
+            </div>
+            <div>
+              <h1 className="text-3xl font-bold text-gray-800">CleanBusiness Pro</h1>
+              <p className="text-gray-600">Complete Business Management Platform for Cleaning Services</p>
+              <div className="flex items-center gap-2 mt-1">
+                <span className="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded-full">v2.0.0</span>
+                <span className="text-xs bg-green-100 text-green-700 px-2 py-1 rounded-full">Enhanced</span>
+              </div>
+            </div>
+          </div>
+          
+          <div className="flex items-center gap-3">
+            {!isPremium && (
+              <div className="text-right mr-4">
+                <div className="text-sm text-gray-600">Currently on Free Plan</div>
+                <div className="text-xs text-gray-500">Upgrade for Quote Calculator</div>
+              </div>
+            )}
+            {isPremium && (
+              <div className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-purple-100 to-pink-100 text-purple-700 rounded-full">
+                <Crown className="w-4 h-4" />
+                Pro Plan Active
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Main Navigation */}
+        <div className="grid grid-cols-2 md:grid-cols-8 gap-2 bg-white rounded-xl p-2 shadow-sm">
+          {[
+            { id: 'dashboard', label: 'Dashboard', icon: BarChart3, color: 'bg-blue-600' },
+            { id: 'quote', label: 'Quote Calculator', icon: Calculator, color: 'bg-green-600', premium: !isPremium },
+            { id: 'routes', label: 'Route Optimizer', icon: Navigation, color: 'bg-purple-600', premium: !isPremium },
+            { id: 'competitive', label: 'Market Analysis', icon: Target, color: 'bg-orange-600', premium: !isPremium },
+            { id: 'revenue', label: 'Revenue Analytics', icon: DollarSign, color: 'bg-emerald-600' },
+            { id: 'success', label: 'Success Stories', icon: Star, color: 'bg-yellow-600' },
+            { id: 'integrations', label: 'Integrations', icon: Globe, color: 'bg-indigo-600' },
+            { id: 'pricing', label: 'Pricing Plans', icon: Crown, color: 'bg-pink-600' }
+          ].map(module => (
+            <button
+              key={module.id}
+              onClick={() => setActiveModule(module.id)}
+              className={`flex flex-col items-center gap-2 px-4 py-3 rounded-lg transition-all relative ${
+                activeModule === module.id 
+                  ? `${module.color} text-white shadow-md transform scale-105` 
+                  : 'text-gray-600 hover:text-gray-800 hover:bg-gray-50'
+              }`}
+            >
+              {module.premium && (
+                <Crown className="absolute -top-1 -right-1 w-4 h-4 text-yellow-500" />
+              )}
+              <module.icon className="w-5 h-5" />
+              <span className="text-xs font-medium text-center leading-tight">{module.label}</span>
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* Dashboard Module */}
+      {activeModule === 'dashboard' && (
+        <div className="space-y-6">
+          {/* Key Metrics Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            <MetricCard
+              title="Monthly Revenue"
+              value={`$${revenueData.current.revenue.toLocaleString()}`}
+              change={revenueData.current.growth}
+              icon={DollarSign}
+              color="green"
+            />
+            <MetricCard
+              title="Jobs Completed"
+              value={revenueData.current.jobs}
+              change={8.3}
+              icon={Target}
+              color="blue"
+            />
+            <MetricCard
+              title="Active Crews"
+              value={crews.length}
+              icon={Users}
+              color="purple"
+            />
+            <MetricCard
+              title="Avg Rating"
+              value="4.8"
+              change={0.2}
+              icon={Star}
+              color="orange"
+            />
+          </div>
+
+          {/* Live ROI Calculator */}
+          <div className="bg-gradient-to-r from-green-600 to-emerald-600 rounded-xl p-8 text-white shadow-lg">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+              <div>
+                <h3 className="text-2xl font-bold mb-4">💰 See Your ROI in Real-Time</h3>
+                <p className="text-green-100 mb-6">
+                  Enter your current numbers and watch how CleanBusiness Pro transforms your business
+                </p>
+                
+                <div className="grid grid-cols-2 gap-4 mb-6">
+                  <div>
+                    <label className="block text-green-100 text-sm mb-2">Jobs per month</label>
+                    <input
+                      type="number"
+                      value={roiCalculator.currentJobs}
+                      onChange={(e) => setRoiCalculator({...roiCalculator, currentJobs: parseInt(e.target.value) || 0})}
+                      className="w-full p-3 rounded-lg text-gray-800 font-semibold"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-green-100 text-sm mb-2">Avg job value</label>
+                    <input
+                      type="number"
+                      value={roiCalculator.avgJobValue}
+                      onChange={(e) => setRoiCalculator({...roiCalculator, avgJobValue: parseInt(e.target.value) || 0})}
+                      className="w-full p-3 rounded-lg text-gray-800 font-semibold"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-green-100 text-sm mb-2">Hours worked/week</label>
+                    <input
+                      type="number"
+                      value={roiCalculator.hoursPerWeek}
+                      onChange={(e) => setRoiCalculator({...roiCalculator, hoursPerWeek: parseInt(e.target.value) || 0})}
+                      className="w-full p-3 rounded-lg text-gray-800 font-semibold"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-green-100 text-sm mb-2">Fuel cost/week</label>
+                    <input
+                      type="number"
+                      value={roiCalculator.fuelCostPerWeek}
+                      onChange={(e) => setRoiCalculator({...roiCalculator, fuelCostPerWeek: parseInt(e.target.value) || 0})}
+                      className="w-full p-3 rounded-lg text-gray-800 font-semibold"
+                    />
+                  </div>
+                </div>
+                
+                <button
+                  onClick={() => setRoiCalculator({...roiCalculator, showResults: true})}
+                  className="w-full bg-white text-green-600 font-bold py-4 px-6 rounded-lg hover:bg-green-50 transition-colors text-lg"
+                >
+                  🚀 Calculate My ROI
+                </button>
+              </div>
+              
+              <div>
+                {roiCalculator.showResults && (() => {
+                  const results = calculateROI();
+                  return (
+                    <div className="bg-white bg-opacity-10 rounded-xl p-6">
+                      <h4 className="text-xl font-bold mb-4">Your Results:</h4>
+                      <div className="space-y-3">
+                        <div className="flex justify-between items-center">
+                          <span className="text-green-100">Additional monthly revenue:</span>
+                          <span className="text-2xl font-bold">${results.additionalRevenue.toLocaleString()}</span>
+                        </div>
+                        <div className="flex justify-between items-center">
+                          <span className="text-green-100">Monthly fuel savings:</span>
+                          <span className="text-xl font-bold">${results.fuelSavings}</span>
+                        </div>
+                        <div className="flex justify-between items-center">
+                          <span className="text-green-100">Time saved per week:</span>
+                          <span className="text-xl font-bold">{results.timeSaved.toFixed(1)} hours</span>
+                        </div>
+                        <div className="border-t border-green-400 pt-3 mt-4">
+                          <div className="flex justify-between items-center">
+                            <span className="text-green-100">Total monthly benefit:</span>
+                            <span className="text-3xl font-bold">${results.totalMonthlySavings.toLocaleString()}</span>
+                          </div>
+                          <div className="flex justify-between items-center mt-2">
+                            <span className="text-green-100">ROI on $50 investment:</span>
+                            <span className="text-2xl font-bold text-yellow-300">{results.roi}%</span>
+                          </div>
+                          <div className="text-center mt-4 p-3 bg-yellow-400 bg-opacity-20 rounded-lg">
+                            <span className="text-yellow-200 font-medium">
+                              💡 Pays for itself in {results.paybackDays} days!
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })()}
+                
+                {!roiCalculator.showResults && (
+                  <div className="bg-white bg-opacity-10 rounded-xl p-6 text-center">
+                    <div className="text-6xl mb-4">📊</div>
+                    <h4 className="text-xl font-bold mb-2">Ready to see your potential?</h4>
+                    <p className="text-green-100">
+                      Based on our 2,500+ users, the average cleaning business sees 340% ROI in the first month
+                    </p>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+
+          {/* Dashboard Insights */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div className="bg-white rounded-xl shadow-sm border">
+              <div className="p-6 border-b border-gray-100">
+                <h3 className="text-lg font-semibold text-gray-800">This Week's Schedule</h3>
+              </div>
+              <div className="p-6">
+                <div className="space-y-3">
+                  {weeklyAppointments.slice(0, 3).map((apt) => (
+                    <div key={apt.id} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                      <div className="flex-1">
+                        <h4 className="font-medium text-gray-800">{apt.client}</h4>
+                        <p className="text-sm text-gray-600">{apt.day} • {apt.timeWindow}</p>
+                        <p className="text-xs text-gray-500">{apt.zone}</p>
+                      </div>
+                      <div className="text-right">
+                        <div className="font-semibold text-gray-800">${apt.price}</div>
+                        <div className="text-sm text-gray-600">{apt.duration}h</div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-white rounded-xl shadow-sm border">
+              <div className="p-6 border-b border-gray-100">
+                <h3 className="text-lg font-semibold text-gray-800">Revenue Trend</h3>
+              </div>
+              <div className="p-6">
+                <SimpleChart data={revenueData.monthly.slice(-4)} color="#10B981" />
+                <div className="mt-4 p-3 bg-green-50 rounded-lg">
+                  <p className="text-sm text-green-700">
+                    📈 <strong>+15.2% growth</strong> this month. On track to exceed targets!
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Quote Calculator Module */}
+      {activeModule === 'quote' && (
+        <>
+          {!isPremium ? (
+            <PremiumFeatureOverlay feature="Professional Quote Calculator - The core tool that drives your business growth">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div className="bg-white rounded-xl shadow-sm border">
+                  <div className="p-6 border-b border-gray-100">
+                    <h3 className="text-lg font-semibold text-gray-800">Generate Instant Quote</h3>
+                  </div>
+                  <div className="p-6 space-y-4">
+                    <div>
+                      <label className="block text-sm font-semibold text-gray-700 mb-2">Square Footage</label>
+                      <input type="number" value="1200" disabled className="w-full p-3 border rounded-lg bg-gray-50" />
+                    </div>
+                  </div>
+                </div>
+                <div className="bg-white rounded-xl shadow-sm border">
+                  <div className="p-6 border-b border-gray-100">
+                    <h3 className="text-lg font-semibold text-gray-800">Your Quote</h3>
+                  </div>
+                  <div className="p-6">
+                    <div className="bg-gradient-to-br from-green-50 to-emerald-50 border border-green-200 rounded-xl p-6">
+                      <div className="text-center">
+                        <div className="text-5xl font-bold text-green-600 mb-2">$170</div>
+                        <p className="text-gray-600">Professional cleaning service</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </PremiumFeatureOverlay>
+          ) : (
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <div className="bg-white rounded-xl shadow-sm border">
+                <div className="p-6 border-b border-gray-100">
+                  <h3 className="text-lg font-semibold text-gray-800">Generate Instant Quote</h3>
+                </div>
+                <div className="p-6 space-y-4">
+                  <div>
+                    <label className="block text-sm font-semibold text-gray-700 mb-2">Property Type</label>
+                    <div className="grid grid-cols-2 gap-3">
+                      <button
+                        onClick={() => setQuoteFormData({...quoteFormData, propertyType: 'residential'})}
+                        className={`p-3 rounded-lg border-2 transition-all ${
+                          quoteFormData.propertyType === 'residential' 
+                            ? 'border-blue-500 bg-blue-50 text-blue-700' 
+                            : 'border-gray-200'
+                        }`}
+                      >
+                        Residential
+                      </button>
+                      <button
+                        onClick={() => setQuoteFormData({...quoteFormData, propertyType: 'commercial'})}
+                        className={`p-3 rounded-lg border-2 transition-all ${
+                          quoteFormData.propertyType === 'commercial' 
+                            ? 'border-blue-500 bg-blue-50 text-blue-700' 
+                            : 'border-gray-200'
+                        }`}
+                      >
+                        Commercial
+                      </button>
+                    </div>
+                  </div>
+                  
+                  <div>
+                    <label className="block text-sm font-semibold text-gray-700 mb-2">Square Footage</label>
+                    <input
+                      type="number"
+                      value={quoteFormData.squareFootage}
+                      onChange={(e) => setQuoteFormData({...quoteFormData, squareFootage: e.target.value})}
+                      placeholder="Enter square footage"
+                      className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-semibold text-gray-700 mb-2">Service Type</label>
+                    <select
+                      value={quoteFormData.serviceType}
+                      onChange={(e) => setQuoteFormData({...quoteFormData, serviceType: e.target.value})}
+                      className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                    >
+                      <option value="standard">Standard Cleaning</option>
+                      <option value="deep">Deep Cleaning</option>
+                      <option value="move-in-out">Move In/Out Cleaning</option>
+                      <option value="post-construction">Post Construction Cleaning</option>
+                    </select>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-semibold text-gray-700 mb-2">Frequency</label>
+                    <select
+                      value={quoteFormData.frequency}
+                      onChange={(e) => setQuoteFormData({...quoteFormData, frequency: e.target.value})}
+                      className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                    >
+                      <option value="one-time">One-time</option>
+                      <option value="weekly">Weekly</option>
+                      <option value="bi-weekly">Bi-weekly</option>
+                      <option value="monthly">Monthly</option>
+                    </select>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-semibold text-gray-700 mb-3">Property Details</label>
+                    <label className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg cursor-pointer">
+                      <input
+                        type="checkbox"
+                        checked={quoteFormData.hasPets}
+                        onChange={(e) => setQuoteFormData({...quoteFormData, hasPets: e.target.checked})}
+                        className="w-4 h-4 text-blue-600 rounded focus:ring-blue-500"
+                      />
+                      <span className="flex-1 text-sm font-medium">Property has pets</span>
+                      {quoteFormData.hasPets && (
+                        <span className="text-xs text-orange-600 font-medium">+5% surcharge</span>
+                      )}
+                    </label>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-semibold text-gray-700 mb-3">Add-On Services</label>
+                    <div className="space-y-2 max-h-48 overflow-y-auto">
+                      {addOnServices.map(service => (
+                        <label key={service.id} className="flex items-center gap-3 p-3 hover:bg-gray-50 rounded-lg cursor-pointer">
+                          <input
+                            type="checkbox"
+                            checked={quoteFormData.addOns.includes(service.id)}
+                            onChange={(e) => {
+                              if (e.target.checked) {
+                                setQuoteFormData({...quoteFormData, addOns: [...quoteFormData.addOns, service.id]});
+                              } else {
+                                setQuoteFormData({...quoteFormData, addOns: quoteFormData.addOns.filter(id => id !== service.id)});
+                              }
+                            }}
+                            className="w-4 h-4 text-blue-600 rounded focus:ring-blue-500"
+                          />
+                          <span className="flex-1 text-sm">{service.name}</span>
+                          <span className="font-medium text-gray-700 text-sm">+${service.price}</span>
+                        </label>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-white rounded-xl shadow-sm border">
+                <div className="p-6 border-b border-gray-100">
+                  <h3 className="text-lg font-semibold text-gray-800">Your Quote</h3>
+                </div>
+                {quote ? (
+                  <div className="p-6">
+                    <div className="bg-gradient-to-br from-green-50 to-emerald-50 border border-green-200 rounded-xl p-6">
+                      <div className="text-center mb-4">
+                        <div className="text-5xl font-bold text-green-600 mb-2">${quote}</div>
+                        <p className="text-gray-600">Professional cleaning service</p>
+                        {quoteFormData.frequency !== 'one-time' && (
+                          <p className="text-sm text-green-600 mt-1">
+                            ✅ Recurring discount applied!
+                          </p>
+                        )}
+                      </div>
+                      
+                      <div className="space-y-2 mb-6">
+                        <div className="flex justify-between">
+                          <span className="text-gray-600">Service Type:</span>
+                          <span className="font-medium capitalize">{quoteFormData.serviceType.replace('-', ' ')}</span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span className="text-gray-600">Property Size:</span>
+                          <span className="font-medium">{quoteFormData.squareFootage} sqft</span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span className="text-gray-600">Frequency:</span>
+                          <span className="font-medium capitalize">{quoteFormData.frequency.replace('-', ' ')}</span>
+                        </div>
+                        {quoteFormData.addOns.length > 0 && (
+                          <div className="flex justify-between">
+                            <span className="text-gray-600">Add-ons:</span>
+                            <span className="font-medium">{quoteFormData.addOns.length} selected</span>
+                          </div>
+                        )}
+                        {quoteFormData.hasPets && (
+                          <div className="flex justify-between">
+                            <span className="text-gray-600">Pet surcharge:</span>
+                            <span className="font-medium text-orange-600">+5%</span>
+                          </div>
+                        )}
+                        {quoteFormData.frequency !== 'one-time' && (
+                          <div className="flex justify-between text-green-600">
+                            <span>Recurring service:</span>
+                            <span className="font-medium">✅ Discount applied</span>
+                          </div>
+                        )}
+                      </div>
+                      
+                      <button className="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors">
+                        📧 Send Quote to Client
+                      </button>
+                      
+                      {quoteFormData.addOns.length > 0 && (
+                        <div className="mt-3 p-3 bg-blue-50 rounded-lg">
+                          <p className="text-sm text-blue-700 font-medium">Selected Add-ons:</p>
+                          <div className="text-xs text-blue-600 mt-1">
+                            {quoteFormData.addOns.map(addOnId => {
+                              const addOn = addOnServices.find(s => s.id === addOnId);
+                              return addOn ? addOn.name : '';
+                            }).filter(Boolean).join(', ')}
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                ) : (
+                  <div className="p-6 text-center">
+                    <Calculator className="w-12 h-12 text-gray-400 mx-auto mb-4" />
+                    <p className="text-gray-500">Enter property details to generate quote</p>
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
+        </>
+      )}
+
+      {/* Route Optimizer Module */}
+      {activeModule === 'routes' && (
+        <div className="space-y-6">
+          <div className="bg-white rounded-xl p-6 shadow-sm border">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-lg font-semibold text-gray-800">Route Optimizer</h3>
+              <div className="flex items-center gap-3">
+                {calendarSyncStatus === 'connected' && (
+                  <div className="flex items-center gap-2 px-3 py-1 bg-green-100 text-green-700 rounded-full text-sm">
+                    <CheckCircle className="w-4 h-4" />
+                    Google Calendar Synced
+                  </div>
+                )}
+                <div className="flex gap-2">
+                  <button
+                    onClick={() => setSelectedView('daily')}
+                    className={`px-4 py-2 rounded-lg text-sm font-medium ${
+                      selectedView === 'daily' ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-700'
+                    }`}
+                  >
+                    Daily View
+                  </button>
+                  <button
+                    onClick={() => setSelectedView('weekly')}
+                    className={`px-4 py-2 rounded-lg text-sm font-medium ${
+                      selectedView === 'weekly' ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-700'
+                    }`}
+                  >
+                    Weekly View
+                  </button>
+                </div>
+              </div>
+            </div>
+            
+            {calendarSyncStatus === 'disconnected' && (
+              <div className="mb-4 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
+                <div className="flex items-center gap-2 mb-2">
+                  <Calendar className="w-5 h-5 text-yellow-600" />
+                  <h4 className="font-medium text-yellow-800">Connect Your Calendar</h4>
+                </div>
+                <p className="text-sm text-yellow-700 mb-3">
+                  Sync with Google Calendar to automatically import your appointments and optimize routes based on real bookings.
+                </p>
+                <button 
+                  onClick={() => setActiveModule('integrations')}
+                  className="px-4 py-2 bg-yellow-600 text-white rounded-lg hover:bg-yellow-700 text-sm font-medium"
+                >
+                  Connect Google Calendar
+                </button>
+              </div>
+            )}
+          </div>
+
+          <PremiumFeatureOverlay feature="AI-powered route optimization with Google Calendar sync and real-time traffic data">
+            <div className="bg-white rounded-xl shadow-sm border">
+              <div className="p-6">
+                {calendarSyncStatus === 'connected' ? (
+                  <div className="mb-4 p-3 bg-blue-50 rounded-lg">
+                    <p className="text-sm text-blue-700">
+                      📅 <strong>Google Calendar Connected</strong> - Showing real appointments with optimized routes
+                    </p>
+                  </div>
+                ) : (
+                  <div className="mb-4 p-3 bg-yellow-50 rounded-lg">
+                    <p className="text-sm text-yellow-700">
+                      📅 <strong>Demo Mode</strong> - Connect Google Calendar to see your real appointments
+                    </p>
+                  </div>
+                )}
+                
+                {selectedView === 'weekly' ? (
+                  <div>
+                    <h3 className="text-lg font-semibold text-gray-800 mb-4">
+                      Weekly Schedule {calendarSyncStatus === 'connected' ? '(Live from Google Calendar)' : '(Demo Data)'}
+                    </h3>
+                    <div className="grid grid-cols-7 gap-2">
+                      {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map(day => (
+                        <div key={day} className="text-center font-medium text-gray-700 py-2 border-b">
+                          {day}
+                        </div>
+                      ))}
+                      {weeklyAppointments.map(apt => (
+                        <div key={apt.id} className="p-2 bg-blue-50 rounded text-xs">
+                          <div className="font-medium">{apt.client}</div>
+                          <div className="text-gray-600">{apt.timeWindow.split(' - ')[0]}</div>
+                          <div className="text-gray-600">${apt.price}</div>
+                          {calendarSyncStatus === 'connected' && (
+                            <div className="text-green-600 text-xs mt-1">✓ Synced</div>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                    
+                    <div className="mt-6 p-4 bg-gray-50 rounded-lg">
+                      <h4 className="font-semibold text-gray-800 mb-2">AI Route Optimization Results:</h4>
+                      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+                        <div>
+                          <span className="text-gray-600">Weekly Drive Time:</span>
+                          <div className="font-semibold text-gray-800">6.2 hours</div>
+                          <div className="text-green-600 text-xs">-2.3h optimized</div>
+                        </div>
+                        <div>
+                          <span className="text-gray-600">Fuel Savings:</span>
+                          <div className="font-semibold text-gray-800">$89</div>
+                          <div className="text-green-600 text-xs">vs unoptimized</div>
+                        </div>
+                        <div>
+                          <span className="text-gray-600">Zone Clustering:</span>
+                          <div className="font-semibold text-gray-800">94% efficient</div>
+                          <div className="text-blue-600 text-xs">by neighborhood</div>
+                        </div>
+                        <div>
+                          <span className="text-gray-600">Extra Jobs Possible:</span>
+                          <div className="font-semibold text-gray-800">3-4 more</div>
+                          <div className="text-purple-600 text-xs">time saved</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                ) : (
+                  <div>
+                    <h3 className="text-lg font-semibold text-gray-800 mb-4">
+                      Daily Route Map {calendarSyncStatus === 'connected' ? '(Live Data)' : '(Demo)'}
+                    </h3>
+                    <div className="h-64 bg-gradient-to-br from-blue-100 to-green-100 rounded-lg flex items-center justify-center">
+                      <div className="text-center">
+                        <MapPin className="w-12 h-12 text-gray-500 mx-auto mb-2" />
+                        <p className="text-gray-600">Interactive route map with optimized stops</p>
+                        {calendarSyncStatus === 'connected' ? (
+                          <p className="text-sm text-green-600 mt-1">✓ Real addresses from Google Calendar</p>
+                        ) : (
+                          <p className="text-sm text-yellow-600 mt-1">Connect calendar for real addresses</p>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+          </PremiumFeatureOverlay>
+        </div>
+      )}
+
+      {/* Integrations Module */}
+      {activeModule === 'integrations' && (
+        <div className="space-y-6">
+          <div className="text-center mb-8">
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">Connect Your Business Tools</h2>
+            <p className="text-xl text-gray-600">Sync with your existing workflow to automate scheduling and optimize routes</p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {/* Google Calendar Integration */}
+            <div className="bg-white rounded-xl shadow-sm border p-6">
+              <div className="flex items-center gap-4 mb-4">
+                <div className="p-3 bg-blue-100 rounded-lg">
+                  <Calendar className="w-8 h-8 text-blue-600" />
+                </div>
+                <div className="flex-1">
+                  <h3 className="text-xl font-semibold text-gray-800">Google Calendar</h3>
+                  <p className="text-gray-600">Sync appointments and optimize routes automatically</p>
+                </div>
+                <div className={`px-3 py-1 rounded-full text-sm font-medium ${
+                  calendarSyncStatus === 'connected' 
+                    ? 'bg-green-100 text-green-700' 
+                    : 'bg-gray-100 text-gray-600'
+                }`}>
+                  {calendarSyncStatus === 'connected' ? 'Connected' : 'Not Connected'}
+                </div>
+              </div>
+              
+              <div className="space-y-3 mb-6">
+                <div className="flex items-center gap-3 text-sm text-gray-700">
+                  <CheckCircle className="w-4 h-4 text-green-500" />
+                  <span>Automatically import scheduled appointments</span>
+                </div>
+                <div className="flex items-center gap-3 text-sm text-gray-700">
+                  <CheckCircle className="w-4 h-4 text-green-500" />
+                  <span>Extract client addresses for route optimization</span>
+                </div>
+                <div className="flex items-center gap-3 text-sm text-gray-700">
+                  <CheckCircle className="w-4 h-4 text-green-500" />
+                  <span>Sync crew assignments and time windows</span>
+                </div>
+                <div className="flex items-center gap-3 text-sm text-gray-700">
+                  <CheckCircle className="w-4 h-4 text-green-500" />
+                  <span>Real-time updates when appointments change</span>
+                </div>
+              </div>
+
+              {calendarSyncStatus === 'disconnected' && (
+                <button 
+                  onClick={() => {
+                    setCalendarSyncStatus('connecting');
+                    setTimeout(() => {
+                      setCalendarSyncStatus('connected');
+                    }, 2000);
+                  }}
+                  className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors"
+                >
+                  Connect Google Calendar
+                </button>
+              )}
+              
+              {calendarSyncStatus === 'connecting' && (
+                <div className="flex items-center justify-center py-3">
+                  <RefreshCw className="w-5 h-5 text-blue-600 animate-spin mr-2" />
+                  <span className="text-blue-600 font-medium">Connecting...</span>
+                </div>
+              )}
+              
+              {calendarSyncStatus === 'connected' && (
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between p-3 bg-green-50 rounded-lg">
+                    <span className="text-green-700 font-medium">Last sync: Just now</span>
+                    <span className="text-green-600 text-sm">24 appointments imported</span>
+                  </div>
+                  <button 
+                    onClick={() => setCalendarSyncStatus('disconnected')}
+                    className="w-full bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium py-2 px-4 rounded-lg transition-colors text-sm"
+                  >
+                    Disconnect
+                  </button>
+                </div>
+              )}
+            </div>
+
+            {/* Google Maps Integration */}
+            <div className="bg-white rounded-xl shadow-sm border p-6">
+              <div className="flex items-center gap-4 mb-4">
+                <div className="p-3 bg-red-100 rounded-lg">
+                  <MapPin className="w-8 h-8 text-red-600" />
+                </div>
+                <div className="flex-1">
+                  <h3 className="text-xl font-semibold text-gray-800">Google Maps</h3>
+                  <p className="text-gray-600">Real-time traffic and route optimization</p>
+                </div>
+                <div className="px-3 py-1 bg-green-100 text-green-700 rounded-full text-sm font-medium">
+                  Connected
+                </div>
+              </div>
+              
+              <div className="space-y-3 mb-6">
+                <div className="flex items-center gap-3 text-sm text-gray-700">
+                  <CheckCircle className="w-4 h-4 text-green-500" />
+                  <span>Real-time traffic data for route planning</span>
+                </div>
+                <div className="flex items-center gap-3 text-sm text-gray-700">
+                  <CheckCircle className="w-4 h-4 text-green-500" />
+                  <span>Accurate drive time estimates</span>
+                </div>
+                <div className="flex items-center gap-3 text-sm text-gray-700">
+                  <CheckCircle className="w-4 h-4 text-green-500" />
+                  <span>Alternative route suggestions</span>
+                </div>
+              </div>
+
+              <div className="p-3 bg-green-50 rounded-lg">
+                <span className="text-green-700 font-medium text-sm">Status: Active & Optimizing Routes</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Integration Benefits */}
+          <div className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-xl p-8 border">
+            <h3 className="text-2xl font-bold text-gray-800 mb-4">How Calendar Integration Powers Your Routes</h3>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div className="text-center">
+                <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Calendar className="w-8 h-8 text-blue-600" />
+                </div>
+                <h4 className="font-semibold text-gray-800 mb-2">Automatic Import</h4>
+                <p className="text-sm text-gray-600">
+                  Sync pulls your real appointments with client addresses and automatically maps optimal routes.
+                </p>
+              </div>
+              <div className="text-center">
+                <div className="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Zap className="w-8 h-8 text-purple-600" />
+                </div>
+                <h4 className="font-semibold text-gray-800 mb-2">Smart Optimization</h4>
+                <p className="text-sm text-gray-600">
+                  AI groups jobs by neighborhood and optimizes drive time between your actual bookings.
+                </p>
+              </div>
+              <div className="text-center">
+                <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <TrendingUp className="w-8 h-8 text-green-600" />
+                </div>
+                <h4 className="font-semibold text-gray-800 mb-2">Real-Time Updates</h4>
+                <p className="text-sm text-gray-600">
+                  When clients reschedule, routes automatically adjust to maintain peak efficiency.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Market Analysis Module */}
+      {activeModule === 'competitive' && (
+        <div className="space-y-6">
+          <div className="bg-white rounded-xl p-6 shadow-sm border">
+            <h3 className="text-lg font-semibold text-gray-800 mb-4">Market Analysis by Zip Code</h3>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Target Zip Code</label>
+                <input
+                  type="text"
+                  value={marketZipCode}
+                  onChange={(e) => setMarketZipCode(e.target.value)}
+                  placeholder="19102"
+                  className="border border-gray-300 rounded-lg px-3 py-2 text-sm w-full"
+                />
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Search Radius</label>
+                <select
+                  value={marketRadius}
+                  onChange={(e) => setMarketRadius(e.target.value)}
+                  className="border border-gray-300 rounded-lg px-3 py-2 text-sm w-full"
+                >
+                  <option value="1">1 mile</option>
+                  <option value="3">3 miles</option>
+                  <option value="5">5 miles</option>
+                  <option value="10">10 miles</option>
+                </select>
+              </div>
+
+              <div className="flex items-end">
+                <button className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 w-full justify-center">
+                  <Search className="w-4 h-4" />
+                  Analyze Market
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <PremiumFeatureOverlay feature="Advanced competitive intelligence with real-time pricing and market trends by zip code">
+            <div className="bg-white rounded-xl shadow-sm border">
+              <div className="p-6 border-b border-gray-100">
+                <h3 className="text-lg font-semibold text-gray-800">Competitors in {marketZipCode}</h3>
+              </div>
+              <div className="overflow-x-auto">
+                <table className="w-full">
+                  <thead className="bg-gray-50">
+                    <tr>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Company</th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Distance</th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Medium Home</th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Reviews</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-gray-200">
+                    <tr className="bg-blue-50">
+                      <td className="px-6 py-4">
+                        <div className="font-medium text-blue-800">Your Company</div>
+                      </td>
+                      <td className="px-6 py-4 text-blue-800 font-semibold">0.0 mi</td>
+                      <td className="px-6 py-4 text-blue-800 font-semibold">$170</td>
+                      <td className="px-6 py-4 text-blue-800 font-semibold">4.8 ⭐</td>
+                    </tr>
+                    {competitors.map((comp) => (
+                      <tr key={comp.id} className="hover:bg-gray-50">
+                        <td className="px-6 py-4">
+                          <div className="font-medium text-gray-900">{comp.name}</div>
+                          <div className="text-sm text-gray-500">{comp.location}</div>
+                        </td>
+                        <td className="px-6 py-4 text-sm text-gray-900">{comp.distance} mi</td>
+                        <td className="px-6 py-4 text-sm text-gray-900">${comp.mediumHome}</td>
+                        <td className="px-6 py-4 text-sm text-gray-900">
+                          {comp.reviewScore} ⭐ ({comp.reviewCount})
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </PremiumFeatureOverlay>
+        </div>
+      )}
+
+      {/* Revenue Analytics Module */}
+      {activeModule === 'revenue' && (
+        <div className="space-y-6">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+            <MetricCard
+              title="Total Revenue"
+              value={`${revenueData.current.revenue.toLocaleString()}`}
+              change={revenueData.current.growth}
+              icon={DollarSign}
+              color="green"
+            />
+            <MetricCard
+              title="Jobs Completed"
+              value={revenueData.current.jobs}
+              change={8.3}
+              icon={Target}
+              color="blue"
+            />
+            <MetricCard
+              title="Avg Job Value"
+              value={`${revenueData.current.avgJobValue.toFixed(0)}`}
+              change={4.2}
+              icon={TrendingUp}
+              color="purple"
+            />
+            <MetricCard
+              title="Growth Rate"
+              value="15.2%"
+              change={15.2}
+              icon={Star}
+              color="orange"
+            />
+          </div>
+
+          <div className="bg-white rounded-xl shadow-sm border">
+            <div className="p-6 border-b border-gray-100">
+              <h3 className="text-lg font-semibold text-gray-800">Monthly Revenue Trend</h3>
+            </div>
+            <div className="p-6">
+              <SimpleChart data={revenueData.monthly} color="#10B981" />
+            </div>
+          </div>
+        </div>
+      )}
+      {activeModule === 'success' && (
+        <div className="space-y-8">
+          <div className="text-center">
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">Real Results from Real Cleaners</h2>
+            <p className="text-xl text-gray-600 mb-8">Join 2,500+ cleaning professionals who've transformed their businesses</p>
+            
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
+              <div className="bg-green-100 rounded-xl p-6">
+                <div className="text-3xl font-bold text-green-600">340%</div>
+                <div className="text-green-700 font-medium">Average ROI</div>
+                <div className="text-sm text-green-600">First month</div>
+              </div>
+              <div className="bg-blue-100 rounded-xl p-6">
+                <div className="text-3xl font-bold text-blue-600">18.5hrs</div>
+                <div className="text-blue-700 font-medium">Time Saved</div>
+                <div className="text-sm text-blue-600">Per week average</div>
+              </div>
+              <div className="bg-purple-100 rounded-xl p-6">
+                <div className="text-3xl font-bold text-purple-600">89%</div>
+                <div className="text-purple-700 font-medium">Revenue Increase</div>
+                <div className="text-sm text-purple-600">Within 6 months</div>
+              </div>
+              <div className="bg-orange-100 rounded-xl p-6">
+                <div className="text-3xl font-bold text-orange-600">2,500+</div>
+                <div className="text-orange-700 font-medium">Happy Users</div>
+                <div className="text-sm text-orange-600">And growing</div>
+              </div>
+            </div>
+          </div>
+
+          <div className="bg-white rounded-xl shadow-lg border">
+            <div className="p-8">
+              <div className="flex items-center justify-between mb-6">
+                <h3 className="text-2xl font-bold text-gray-800">Success Stories</h3>
+                <div className="flex gap-2">
+                  {successStories.map((_, index) => (
+                    <button
+                      key={index}
+                      onClick={() => setSelectedStory(index)}
+                      className={`w-3 h-3 rounded-full transition-all ${
+                        selectedStory === index ? 'bg-blue-600' : 'bg-gray-300'
+                      }`}
+                    />
+                  ))}
+                </div>
+              </div>
+              
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <div>
+                  <div className="flex items-center gap-4 mb-6">
+                    <div className="text-6xl">{successStories[selectedStory].image}</div>
+                    <div>
+                      <h4 className="text-2xl font-bold text-gray-800">{successStories[selectedStory].name}</h4>
+                      <p className="text-lg text-gray-600">{successStories[selectedStory].business}</p>
+                      <p className="text-sm text-gray-500">{successStories[selectedStory].location}</p>
+                    </div>
+                  </div>
+                  
+                  <blockquote className="text-lg text-gray-700 italic mb-6 leading-relaxed">
+                    "{successStories[selectedStory].quote}"
+                  </blockquote>
+                  
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="bg-red-50 p-4 rounded-lg">
+                      <div className="text-sm text-red-600 font-medium">BEFORE</div>
+                      <div className="text-2xl font-bold text-red-700">
+                        ${successStories[selectedStory].beforeRevenue.toLocaleString()}
+                      </div>
+                      <div className="text-sm text-red-600">monthly revenue</div>
+                    </div>
+                    <div className="bg-green-50 p-4 rounded-lg">
+                      <div className="text-sm text-green-600 font-medium">AFTER</div>
+                      <div className="text-2xl font-bold text-green-700">
+                        ${successStories[selectedStory].afterRevenue.toLocaleString()}
+                      </div>
+                      <div className="text-sm text-green-600">monthly revenue</div>
+                    </div>
+                  </div>
+                </div>
+                
+                <div>
+                  <h5 className="text-xl font-bold text-gray-800 mb-4">Key Results:</h5>
+                  <ul className="space-y-3">
+                    {successStories[selectedStory].results.map((result, index) => (
+                      <li key={index} className="flex items-start gap-3">
+                        <CheckCircle className="w-6 h-6 text-green-500 flex-shrink-0 mt-0.5" />
+                        <span className="text-gray-700">{result}</span>
+                      </li>
+                    ))}
+                  </ul>
+                  
+                  <div className="mt-6 p-4 bg-blue-50 rounded-lg">
+                    <div className="text-sm text-blue-600 font-medium">TIME SAVED</div>
+                    <div className="text-3xl font-bold text-blue-700">
+                      {successStories[selectedStory].timesSaved}
+                    </div>
+                    <div className="text-sm text-blue-600">More time for family & growth</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Pricing Plans Module */}
+      {activeModule === 'pricing' && (
+        <div className="space-y-8">
+          <div className="text-center">
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">Choose Your Plan</h2>
+            <p className="text-xl text-gray-600 mb-8">Scale your cleaning business with the right tools</p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {pricingTiers.map((tier) => (
+              <div key={tier.id} className={`bg-white rounded-2xl shadow-lg border-2 ${
+                tier.popular ? 'border-blue-500 transform scale-105' : 'border-gray-200'
+              } relative`}>
+                {tier.popular && (
+                  <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
+                    <span className="bg-blue-500 text-white px-4 py-2 rounded-full text-sm font-medium">
+                      Most Popular
+                    </span>
+                  </div>
+                )}
+                
+                <div className="p-8">
+                  <h3 className="text-2xl font-bold text-gray-900 mb-2">{tier.name}</h3>
+                  <div className="mb-6">
+                    <span className="text-4xl font-bold text-gray-900">${tier.price}</span>
+                    <span className="text-gray-600 ml-2">{tier.period}</span>
+                  </div>
+                  
+                  <ul className="space-y-3 mb-8">
+                    {tier.features.map((feature, index) => (
+                      <li key={index} className="flex items-center gap-3">
+                        <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0" />
+                        <span className="text-gray-700">{feature}</span>
+                      </li>
+                    ))}
+                  </ul>
+                  
+                  {tier.limitations && (
+                    <div className="mb-8">
+                      <h4 className="text-sm font-medium text-gray-500 mb-2">Limitations:</h4>
+                      <ul className="space-y-1">
+                        {tier.limitations.map((limitation, index) => (
+                          <li key={index} className="text-sm text-gray-500">• {limitation}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+                  
+                  <button
+                    onClick={() => {
+                      if (tier.id !== 'basic') {
+                        setIsPremium(true);
+                      }
+                    }}
+                    className={`w-full py-3 px-6 rounded-lg font-medium transition-all ${
+                      tier.popular
+                        ? 'bg-blue-600 hover:bg-blue-700 text-white'
+                        : tier.id === 'basic'
+                        ? 'bg-gray-100 hover:bg-gray-200 text-gray-700'
+                        : 'bg-gray-900 hover:bg-gray-800 text-white'
+                    }`}
+                  >
+                    {tier.id === 'basic' ? 'Current Plan' : `Start ${tier.name}`}
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Upgrade CTA for Free Users */}
+      {!isPremium && activeModule !== 'pricing' && showUpgradeCTA && (
+        <div className="fixed bottom-6 right-6 bg-gradient-to-r from-green-600 to-emerald-600 text-white p-6 rounded-xl shadow-xl max-w-sm z-50 animate-pulse">
+          <button 
+            onClick={() => setShowUpgradeCTA(false)}
+            className="absolute top-2 right-2 w-6 h-6 bg-white bg-opacity-20 hover:bg-opacity-30 rounded-full flex items-center justify-center transition-colors"
+          >
+            <span className="text-white text-sm font-bold">×</span>
+          </button>
+          
+          <div className="flex items-center gap-3 mb-3">
+            <div className="w-12 h-12 bg-white bg-opacity-20 rounded-full flex items-center justify-center">
+              <Zap className="w-8 h-8" />
+            </div>
+            <div>
+              <h4 className="font-bold text-lg">💰 Missing Out on $2,000+/Month?</h4>
+              <p className="text-green-100 text-sm">Join 2,500+ cleaners making more money</p>
+            </div>
+          </div>
+          
+          <div className="space-y-2 mb-4 text-sm text-green-100">
+            <div className="flex items-center gap-2">
+              <CheckCircle className="w-4 h-4" />
+              <span><strong>340% ROI</strong> in first month</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <CheckCircle className="w-4 h-4" />
+              <span><strong>18+ hours</strong> saved per week</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <CheckCircle className="w-4 h-4" />
+              <span><strong>$300+</strong> fuel savings monthly</span>
+            </div>
+          </div>
+          
+          <div className="bg-white bg-opacity-10 rounded-lg p-3 mb-4">
+            <div className="text-center">
+              <div className="text-lg font-bold">⏰ Limited Time Offer</div>
+              <div className="text-2xl font-bold text-yellow-300">50% OFF First Month</div>
+              <div className="text-sm text-green-200">$25 instead of $50</div>
+            </div>
+          </div>
+          
+          <button 
+            onClick={() => setActiveModule('pricing')}
+            className="w-full bg-white text-green-600 font-bold py-3 px-4 rounded-lg hover:bg-green-50 transition-all transform hover:scale-105 text-lg"
+          >
+            🚀 Start Free Trial Now
+          </button>
+          
+          <div className="text-center mt-3">
+            <div className="text-green-200 text-xs">✅ No credit card required</div>
+            <div className="text-green-200 text-xs">✅ Cancel anytime</div>
+            <div className="text-green-200 text-xs">✅ Setup in 5 minutes</div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
