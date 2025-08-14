@@ -5,6 +5,7 @@ import {
   Plus, RefreshCw, Bot, Palette, Globe, Code
 } from 'lucide-react';
 
+// Main App Component
 export default function CleanBusinessPro() {
   const [isPremium, setIsPremium] = useState(false);
   const [activeModule, setActiveModule] = useState('dashboard');
@@ -34,6 +35,7 @@ export default function CleanBusinessPro() {
     showResults: false
   });
 
+  // Data
   const addOnServices = [
     { id: 'inside-fridge', name: 'Inside Refrigerator', price: 15 },
     { id: 'inside-oven', name: 'Inside Oven', price: 30 },
@@ -49,53 +51,22 @@ export default function CleanBusinessPro() {
     { id: 3, name: 'Team Gamma', members: ['Rosa', 'Elena'], color: '#8B5CF6' }
   ];
 
-  const getCompetitorsByZip = (zipCode) => {
-    const competitorData = {
-      '19102': [
-        {
-          id: 1,
-          name: "CleanPro Philadelphia",
-          location: "Center City",
-          smallApt: 110,
-          mediumHome: 150,
-          largeHome: 220,
-          reviewScore: 4.8,
-          reviewCount: 342,
-          marketShare: 18,
-          distance: 0.3
-        },
-        {
-          id: 2,
-          name: "Philly Maid Service",
-          location: "Rittenhouse Square",
-          smallApt: 125,
-          mediumHome: 165,
-          largeHome: 240,
-          reviewScore: 4.6,
-          reviewCount: 198,
-          marketShare: 15,
-          distance: 0.8
-        }
-      ],
-      '19147': [
-        {
-          id: 3,
-          name: "South Philly Clean",
-          location: "South Philadelphia",
-          smallApt: 95,
-          mediumHome: 130,
-          largeHome: 190,
-          reviewScore: 4.4,
-          reviewCount: 156,
-          marketShare: 22,
-          distance: 0.5
-        }
-      ]
-    };
-    return competitorData[zipCode] || competitorData['19102'];
+  const revenueData = {
+    current: {
+      revenue: 52340,
+      growth: 15.2,
+      jobs: 324,
+      avgJobValue: 161.54
+    },
+    monthly: [
+      { month: 'Jan', revenue: 38500 },
+      { month: 'Feb', revenue: 42100 },
+      { month: 'Mar', revenue: 39800 },
+      { month: 'Apr', revenue: 44200 },
+      { month: 'May', revenue: 48800 },
+      { month: 'Jun', revenue: 52340 }
+    ]
   };
-
-  const competitors = getCompetitorsByZip(marketZipCode);
 
   const successStories = [
     {
@@ -147,59 +118,6 @@ export default function CleanBusinessPro() {
       ]
     }
   ];
-
-  const weeklyAppointments = [
-    {
-      id: 1,
-      client: 'Johnson Residence',
-      address: '123 Main St, Philadelphia, PA 19102',
-      day: 'Monday',
-      timeWindow: '9:00 AM - 11:00 AM',
-      duration: 2,
-      price: 150,
-      crew: 1,
-      zone: 'Center City'
-    },
-    {
-      id: 2,
-      client: 'Smith Family Home',
-      address: '789 Pine St, Philadelphia, PA 19147',
-      day: 'Tuesday',
-      timeWindow: '10:00 AM - 12:30 PM',
-      duration: 2.5,
-      price: 185,
-      crew: 2,
-      zone: 'South Philly'
-    },
-    {
-      id: 3,
-      client: 'Tech Startup Office',
-      address: '567 N 2nd St, Philadelphia, PA 19130',
-      day: 'Wednesday',
-      timeWindow: '7:00 AM - 10:00 AM',
-      duration: 3,
-      price: 320,
-      crew: 1,
-      zone: 'Northern Liberties'
-    }
-  ];
-
-  const revenueData = {
-    current: {
-      revenue: 52340,
-      growth: 15.2,
-      jobs: 324,
-      avgJobValue: 161.54
-    },
-    monthly: [
-      { month: 'Jan', revenue: 38500 },
-      { month: 'Feb', revenue: 42100 },
-      { month: 'Mar', revenue: 39800 },
-      { month: 'Apr', revenue: 44200 },
-      { month: 'May', revenue: 48800 },
-      { month: 'Jun', revenue: 52340 }
-    ]
-  };
 
   const pricingTiers = [
     {
@@ -253,6 +171,7 @@ export default function CleanBusinessPro() {
     }
   ];
 
+  // Utility Functions
   const calculateQuote = () => {
     const sqft = parseInt(quoteFormData.squareFootage) || 0;
     let basePrice = 0;
@@ -318,6 +237,7 @@ export default function CleanBusinessPro() {
 
   const quote = quoteFormData.squareFootage ? calculateQuote() : null;
 
+  // Components
   const PremiumFeatureOverlay = ({ children, feature, tier = 'pro' }) => {
     if (isPremium) return children;
     
@@ -465,7 +385,7 @@ export default function CleanBusinessPro() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             <MetricCard
               title="Monthly Revenue"
-              value={`$${revenueData.current.revenue.toLocaleString()}`}
+              value={`${revenueData.current.revenue.toLocaleString()}`}
               change={revenueData.current.growth}
               icon={DollarSign}
               color="green"
@@ -600,42 +520,17 @@ export default function CleanBusinessPro() {
             </div>
           </div>
 
-          {/* Dashboard Insights */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <div className="bg-white rounded-xl shadow-sm border">
-              <div className="p-6 border-b border-gray-100">
-                <h3 className="text-lg font-semibold text-gray-800">This Week's Schedule</h3>
-              </div>
-              <div className="p-6">
-                <div className="space-y-3">
-                  {weeklyAppointments.slice(0, 3).map((apt) => (
-                    <div key={apt.id} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
-                      <div className="flex-1">
-                        <h4 className="font-medium text-gray-800">{apt.client}</h4>
-                        <p className="text-sm text-gray-600">{apt.day} • {apt.timeWindow}</p>
-                        <p className="text-xs text-gray-500">{apt.zone}</p>
-                      </div>
-                      <div className="text-right">
-                        <div className="font-semibold text-gray-800">${apt.price}</div>
-                        <div className="text-sm text-gray-600">{apt.duration}h</div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
+          {/* Revenue Trend Chart */}
+          <div className="bg-white rounded-xl shadow-sm border">
+            <div className="p-6 border-b border-gray-100">
+              <h3 className="text-lg font-semibold text-gray-800">Revenue Trend</h3>
             </div>
-
-            <div className="bg-white rounded-xl shadow-sm border">
-              <div className="p-6 border-b border-gray-100">
-                <h3 className="text-lg font-semibold text-gray-800">Revenue Trend</h3>
-              </div>
-              <div className="p-6">
-                <SimpleChart data={revenueData.monthly.slice(-4)} color="#10B981" />
-                <div className="mt-4 p-3 bg-green-50 rounded-lg">
-                  <p className="text-sm text-green-700">
-                    📈 <strong>+15.2% growth</strong> this month. On track to exceed targets!
-                  </p>
-                </div>
+            <div className="p-6">
+              <SimpleChart data={revenueData.monthly.slice(-4)} color="#10B981" />
+              <div className="mt-4 p-3 bg-green-50 rounded-lg">
+                <p className="text-sm text-green-700">
+                  📈 <strong>+15.2% growth</strong> this month. On track to exceed targets!
+                </p>
               </div>
             </div>
           </div>
@@ -824,35 +719,11 @@ export default function CleanBusinessPro() {
                             <span className="font-medium">{quoteFormData.addOns.length} selected</span>
                           </div>
                         )}
-                        {quoteFormData.hasPets && (
-                          <div className="flex justify-between">
-                            <span className="text-gray-600">Pet surcharge:</span>
-                            <span className="font-medium text-orange-600">+5%</span>
-                          </div>
-                        )}
-                        {quoteFormData.frequency !== 'one-time' && (
-                          <div className="flex justify-between text-green-600">
-                            <span>Recurring service:</span>
-                            <span className="font-medium">✅ Discount applied</span>
-                          </div>
-                        )}
                       </div>
                       
                       <button className="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors">
                         📧 Send Quote to Client
                       </button>
-                      
-                      {quoteFormData.addOns.length > 0 && (
-                        <div className="mt-3 p-3 bg-blue-50 rounded-lg">
-                          <p className="text-sm text-blue-700 font-medium">Selected Add-ons:</p>
-                          <div className="text-xs text-blue-600 mt-1">
-                            {quoteFormData.addOns.map(addOnId => {
-                              const addOn = addOnServices.find(s => s.id === addOnId);
-                              return addOn ? addOn.name : '';
-                            }).filter(Boolean).join(', ')}
-                          </div>
-                        </div>
-                      )}
                     </div>
                   </div>
                 ) : (
@@ -923,246 +794,45 @@ export default function CleanBusinessPro() {
           <PremiumFeatureOverlay feature="AI-powered route optimization with Google Calendar sync and real-time traffic data">
             <div className="bg-white rounded-xl shadow-sm border">
               <div className="p-6">
-                {calendarSyncStatus === 'connected' ? (
-                  <div className="mb-4 p-3 bg-blue-50 rounded-lg">
-                    <p className="text-sm text-blue-700">
-                      📅 <strong>Google Calendar Connected</strong> - Showing real appointments with optimized routes
-                    </p>
-                  </div>
-                ) : (
-                  <div className="mb-4 p-3 bg-yellow-50 rounded-lg">
-                    <p className="text-sm text-yellow-700">
-                      📅 <strong>Demo Mode</strong> - Connect Google Calendar to see your real appointments
-                    </p>
-                  </div>
-                )}
+                <div className="mb-4 p-3 bg-blue-50 rounded-lg">
+                  <p className="text-sm text-blue-700">
+                    📅 <strong>Demo Mode</strong> - Connect Google Calendar to see your real appointments
+                  </p>
+                </div>
                 
-                {selectedView === 'weekly' ? (
-                  <div>
-                    <h3 className="text-lg font-semibold text-gray-800 mb-4">
-                      Weekly Schedule {calendarSyncStatus === 'connected' ? '(Live from Google Calendar)' : '(Demo Data)'}
-                    </h3>
-                    <div className="grid grid-cols-7 gap-2">
-                      {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map(day => (
-                        <div key={day} className="text-center font-medium text-gray-700 py-2 border-b">
-                          {day}
-                        </div>
-                      ))}
-                      {weeklyAppointments.map(apt => (
-                        <div key={apt.id} className="p-2 bg-blue-50 rounded text-xs">
-                          <div className="font-medium">{apt.client}</div>
-                          <div className="text-gray-600">{apt.timeWindow.split(' - ')[0]}</div>
-                          <div className="text-gray-600">${apt.price}</div>
-                          {calendarSyncStatus === 'connected' && (
-                            <div className="text-green-600 text-xs mt-1">✓ Synced</div>
-                          )}
-                        </div>
-                      ))}
-                    </div>
-                    
-                    <div className="mt-6 p-4 bg-gray-50 rounded-lg">
-                      <h4 className="font-semibold text-gray-800 mb-2">AI Route Optimization Results:</h4>
-                      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
-                        <div>
-                          <span className="text-gray-600">Weekly Drive Time:</span>
-                          <div className="font-semibold text-gray-800">6.2 hours</div>
-                          <div className="text-green-600 text-xs">-2.3h optimized</div>
-                        </div>
-                        <div>
-                          <span className="text-gray-600">Fuel Savings:</span>
-                          <div className="font-semibold text-gray-800">$89</div>
-                          <div className="text-green-600 text-xs">vs unoptimized</div>
-                        </div>
-                        <div>
-                          <span className="text-gray-600">Zone Clustering:</span>
-                          <div className="font-semibold text-gray-800">94% efficient</div>
-                          <div className="text-blue-600 text-xs">by neighborhood</div>
-                        </div>
-                        <div>
-                          <span className="text-gray-600">Extra Jobs Possible:</span>
-                          <div className="font-semibold text-gray-800">3-4 more</div>
-                          <div className="text-purple-600 text-xs">time saved</div>
-                        </div>
-                      </div>
-                    </div>
+                <div className="h-64 bg-gradient-to-br from-blue-100 to-green-100 rounded-lg flex items-center justify-center mb-6">
+                  <div className="text-center">
+                    <MapPin className="w-12 h-12 text-gray-500 mx-auto mb-2" />
+                    <p className="text-gray-600">Interactive route map with optimized stops</p>
+                    <p className="text-sm text-yellow-600 mt-1">Connect calendar for real addresses</p>
                   </div>
-                ) : (
-                  <div>
-                    <h3 className="text-lg font-semibold text-gray-800 mb-4">
-                      Daily Route Map {calendarSyncStatus === 'connected' ? '(Live Data)' : '(Demo)'}
-                    </h3>
-                    <div className="h-64 bg-gradient-to-br from-blue-100 to-green-100 rounded-lg flex items-center justify-center">
-                      <div className="text-center">
-                        <MapPin className="w-12 h-12 text-gray-500 mx-auto mb-2" />
-                        <p className="text-gray-600">Interactive route map with optimized stops</p>
-                        {calendarSyncStatus === 'connected' ? (
-                          <p className="text-sm text-green-600 mt-1">✓ Real addresses from Google Calendar</p>
-                        ) : (
-                          <p className="text-sm text-yellow-600 mt-1">Connect calendar for real addresses</p>
-                        )}
-                      </div>
-                    </div>
+                </div>
+                
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+                  <div className="bg-gray-50 p-3 rounded-lg">
+                    <span className="text-gray-600">Weekly Drive Time:</span>
+                    <div className="font-semibold text-gray-800">6.2 hours</div>
+                    <div className="text-green-600 text-xs">-2.3h optimized</div>
                   </div>
-                )}
+                  <div className="bg-gray-50 p-3 rounded-lg">
+                    <span className="text-gray-600">Fuel Savings:</span>
+                    <div className="font-semibold text-gray-800">$89</div>
+                    <div className="text-green-600 text-xs">vs unoptimized</div>
+                  </div>
+                  <div className="bg-gray-50 p-3 rounded-lg">
+                    <span className="text-gray-600">Zone Clustering:</span>
+                    <div className="font-semibold text-gray-800">94% efficient</div>
+                    <div className="text-blue-600 text-xs">by neighborhood</div>
+                  </div>
+                  <div className="bg-gray-50 p-3 rounded-lg">
+                    <span className="text-gray-600">Extra Jobs Possible:</span>
+                    <div className="font-semibold text-gray-800">3-4 more</div>
+                    <div className="text-purple-600 text-xs">time saved</div>
+                  </div>
+                </div>
               </div>
             </div>
           </PremiumFeatureOverlay>
-        </div>
-      )}
-
-      {/* Integrations Module */}
-      {activeModule === 'integrations' && (
-        <div className="space-y-6">
-          <div className="text-center mb-8">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">Connect Your Business Tools</h2>
-            <p className="text-xl text-gray-600">Sync with your existing workflow to automate scheduling and optimize routes</p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {/* Google Calendar Integration */}
-            <div className="bg-white rounded-xl shadow-sm border p-6">
-              <div className="flex items-center gap-4 mb-4">
-                <div className="p-3 bg-blue-100 rounded-lg">
-                  <Calendar className="w-8 h-8 text-blue-600" />
-                </div>
-                <div className="flex-1">
-                  <h3 className="text-xl font-semibold text-gray-800">Google Calendar</h3>
-                  <p className="text-gray-600">Sync appointments and optimize routes automatically</p>
-                </div>
-                <div className={`px-3 py-1 rounded-full text-sm font-medium ${
-                  calendarSyncStatus === 'connected' 
-                    ? 'bg-green-100 text-green-700' 
-                    : 'bg-gray-100 text-gray-600'
-                }`}>
-                  {calendarSyncStatus === 'connected' ? 'Connected' : 'Not Connected'}
-                </div>
-              </div>
-              
-              <div className="space-y-3 mb-6">
-                <div className="flex items-center gap-3 text-sm text-gray-700">
-                  <CheckCircle className="w-4 h-4 text-green-500" />
-                  <span>Automatically import scheduled appointments</span>
-                </div>
-                <div className="flex items-center gap-3 text-sm text-gray-700">
-                  <CheckCircle className="w-4 h-4 text-green-500" />
-                  <span>Extract client addresses for route optimization</span>
-                </div>
-                <div className="flex items-center gap-3 text-sm text-gray-700">
-                  <CheckCircle className="w-4 h-4 text-green-500" />
-                  <span>Sync crew assignments and time windows</span>
-                </div>
-                <div className="flex items-center gap-3 text-sm text-gray-700">
-                  <CheckCircle className="w-4 h-4 text-green-500" />
-                  <span>Real-time updates when appointments change</span>
-                </div>
-              </div>
-
-              {calendarSyncStatus === 'disconnected' && (
-                <button 
-                  onClick={() => {
-                    setCalendarSyncStatus('connecting');
-                    setTimeout(() => {
-                      setCalendarSyncStatus('connected');
-                    }, 2000);
-                  }}
-                  className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors"
-                >
-                  Connect Google Calendar
-                </button>
-              )}
-              
-              {calendarSyncStatus === 'connecting' && (
-                <div className="flex items-center justify-center py-3">
-                  <RefreshCw className="w-5 h-5 text-blue-600 animate-spin mr-2" />
-                  <span className="text-blue-600 font-medium">Connecting...</span>
-                </div>
-              )}
-              
-              {calendarSyncStatus === 'connected' && (
-                <div className="space-y-3">
-                  <div className="flex items-center justify-between p-3 bg-green-50 rounded-lg">
-                    <span className="text-green-700 font-medium">Last sync: Just now</span>
-                    <span className="text-green-600 text-sm">24 appointments imported</span>
-                  </div>
-                  <button 
-                    onClick={() => setCalendarSyncStatus('disconnected')}
-                    className="w-full bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium py-2 px-4 rounded-lg transition-colors text-sm"
-                  >
-                    Disconnect
-                  </button>
-                </div>
-              )}
-            </div>
-
-            {/* Google Maps Integration */}
-            <div className="bg-white rounded-xl shadow-sm border p-6">
-              <div className="flex items-center gap-4 mb-4">
-                <div className="p-3 bg-red-100 rounded-lg">
-                  <MapPin className="w-8 h-8 text-red-600" />
-                </div>
-                <div className="flex-1">
-                  <h3 className="text-xl font-semibold text-gray-800">Google Maps</h3>
-                  <p className="text-gray-600">Real-time traffic and route optimization</p>
-                </div>
-                <div className="px-3 py-1 bg-green-100 text-green-700 rounded-full text-sm font-medium">
-                  Connected
-                </div>
-              </div>
-              
-              <div className="space-y-3 mb-6">
-                <div className="flex items-center gap-3 text-sm text-gray-700">
-                  <CheckCircle className="w-4 h-4 text-green-500" />
-                  <span>Real-time traffic data for route planning</span>
-                </div>
-                <div className="flex items-center gap-3 text-sm text-gray-700">
-                  <CheckCircle className="w-4 h-4 text-green-500" />
-                  <span>Accurate drive time estimates</span>
-                </div>
-                <div className="flex items-center gap-3 text-sm text-gray-700">
-                  <CheckCircle className="w-4 h-4 text-green-500" />
-                  <span>Alternative route suggestions</span>
-                </div>
-              </div>
-
-              <div className="p-3 bg-green-50 rounded-lg">
-                <span className="text-green-700 font-medium text-sm">Status: Active & Optimizing Routes</span>
-              </div>
-            </div>
-          </div>
-
-          {/* Integration Benefits */}
-          <div className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-xl p-8 border">
-            <h3 className="text-2xl font-bold text-gray-800 mb-4">How Calendar Integration Powers Your Routes</h3>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <div className="text-center">
-                <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <Calendar className="w-8 h-8 text-blue-600" />
-                </div>
-                <h4 className="font-semibold text-gray-800 mb-2">Automatic Import</h4>
-                <p className="text-sm text-gray-600">
-                  Sync pulls your real appointments with client addresses and automatically maps optimal routes.
-                </p>
-              </div>
-              <div className="text-center">
-                <div className="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <Zap className="w-8 h-8 text-purple-600" />
-                </div>
-                <h4 className="font-semibold text-gray-800 mb-2">Smart Optimization</h4>
-                <p className="text-sm text-gray-600">
-                  AI groups jobs by neighborhood and optimizes drive time between your actual bookings.
-                </p>
-              </div>
-              <div className="text-center">
-                <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <TrendingUp className="w-8 h-8 text-green-600" />
-                </div>
-                <h4 className="font-semibold text-gray-800 mb-2">Real-Time Updates</h4>
-                <p className="text-sm text-gray-600">
-                  When clients reschedule, routes automatically adjust to maintain peak efficiency.
-                </p>
-              </div>
-            </div>
-          </div>
         </div>
       )}
 
@@ -1230,21 +900,47 @@ export default function CleanBusinessPro() {
                       <td className="px-6 py-4 text-blue-800 font-semibold">$170</td>
                       <td className="px-6 py-4 text-blue-800 font-semibold">4.8 ⭐</td>
                     </tr>
-                    {competitors.map((comp) => (
-                      <tr key={comp.id} className="hover:bg-gray-50">
-                        <td className="px-6 py-4">
-                          <div className="font-medium text-gray-900">{comp.name}</div>
-                          <div className="text-sm text-gray-500">{comp.location}</div>
-                        </td>
-                        <td className="px-6 py-4 text-sm text-gray-900">{comp.distance} mi</td>
-                        <td className="px-6 py-4 text-sm text-gray-900">${comp.mediumHome}</td>
-                        <td className="px-6 py-4 text-sm text-gray-900">
-                          {comp.reviewScore} ⭐ ({comp.reviewCount})
-                        </td>
-                      </tr>
-                    ))}
+                    <tr className="hover:bg-gray-50">
+                      <td className="px-6 py-4">
+                        <div className="font-medium text-gray-900">CleanPro Philadelphia</div>
+                        <div className="text-sm text-gray-500">Center City</div>
+                      </td>
+                      <td className="px-6 py-4 text-sm text-gray-900">0.3 mi</td>
+                      <td className="px-6 py-4 text-sm text-gray-900">$150</td>
+                      <td className="px-6 py-4 text-sm text-gray-900">4.8 ⭐ (342)</td>
+                    </tr>
+                    <tr className="hover:bg-gray-50">
+                      <td className="px-6 py-4">
+                        <div className="font-medium text-gray-900">Philly Maid Service</div>
+                        <div className="text-sm text-gray-500">Rittenhouse Square</div>
+                      </td>
+                      <td className="px-6 py-4 text-sm text-gray-900">0.8 mi</td>
+                      <td className="px-6 py-4 text-sm text-gray-900">$165</td>
+                      <td className="px-6 py-4 text-sm text-gray-900">4.6 ⭐ (198)</td>
+                    </tr>
                   </tbody>
                 </table>
+              </div>
+              
+              <div className="p-6 bg-gray-50">
+                <h4 className="font-semibold text-gray-800 mb-3">Market Insights for {marketZipCode}:</h4>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+                  <div className="bg-white p-3 rounded-lg">
+                    <div className="text-gray-600">Avg Market Price:</div>
+                    <div className="text-xl font-bold text-gray-800">$158</div>
+                    <div className="text-green-600 text-xs">You're +7.6% above</div>
+                  </div>
+                  <div className="bg-white p-3 rounded-lg">
+                    <div className="text-gray-600">Market Demand:</div>
+                    <div className="text-xl font-bold text-gray-800">High</div>
+                    <div className="text-blue-600 text-xs">85% booking rate</div>
+                  </div>
+                  <div className="bg-white p-3 rounded-lg">
+                    <div className="text-gray-600">Growth Opportunity:</div>
+                    <div className="text-xl font-bold text-gray-800">Strong</div>
+                    <div className="text-purple-600 text-xs">3 new entrants/month</div>
+                  </div>
+                </div>
               </div>
             </div>
           </PremiumFeatureOverlay>
@@ -1285,16 +981,197 @@ export default function CleanBusinessPro() {
             />
           </div>
 
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div className="bg-white rounded-xl shadow-sm border">
+              <div className="p-6 border-b border-gray-100">
+                <h3 className="text-lg font-semibold text-gray-800">Monthly Revenue Trend</h3>
+              </div>
+              <div className="p-6">
+                <SimpleChart data={revenueData.monthly} color="#10B981" />
+                <div className="mt-4 p-3 bg-green-50 rounded-lg">
+                  <p className="text-sm text-green-700">
+                    📈 <strong>+15.2% growth</strong> this month. Exceeding projections!
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-white rounded-xl shadow-sm border">
+              <div className="p-6 border-b border-gray-100">
+                <h3 className="text-lg font-semibold text-gray-800">Revenue Breakdown</h3>
+              </div>
+              <div className="p-6">
+                <div className="space-y-4">
+                  <div className="flex justify-between items-center p-3 bg-blue-50 rounded-lg">
+                    <span className="text-blue-700 font-medium">Residential Cleaning</span>
+                    <span className="text-blue-800 font-bold">$38,240 (73%)</span>
+                  </div>
+                  <div className="flex justify-between items-center p-3 bg-green-50 rounded-lg">
+                    <span className="text-green-700 font-medium">Commercial Cleaning</span>
+                    <span className="text-green-800 font-bold">$10,460 (20%)</span>
+                  </div>
+                  <div className="flex justify-between items-center p-3 bg-purple-50 rounded-lg">
+                    <span className="text-purple-700 font-medium">Deep Cleaning</span>
+                    <span className="text-purple-800 font-bold">$2,620 (5%)</span>
+                  </div>
+                  <div className="flex justify-between items-center p-3 bg-orange-50 rounded-lg">
+                    <span className="text-orange-700 font-medium">Add-on Services</span>
+                    <span className="text-orange-800 font-bold">$1,020 (2%)</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
           <div className="bg-white rounded-xl shadow-sm border">
             <div className="p-6 border-b border-gray-100">
-              <h3 className="text-lg font-semibold text-gray-800">Monthly Revenue Trend</h3>
+              <h3 className="text-lg font-semibold text-gray-800">Performance Insights</h3>
             </div>
             <div className="p-6">
-              <SimpleChart data={revenueData.monthly} color="#10B981" />
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                <div className="text-center p-4 bg-gradient-to-br from-blue-50 to-blue-100 rounded-lg">
+                  <div className="text-2xl font-bold text-blue-600">98.5%</div>
+                  <div className="text-sm text-blue-700">Client Retention</div>
+                  <div className="text-xs text-blue-600 mt-1">↑ 2.1% vs last month</div>
+                </div>
+                <div className="text-center p-4 bg-gradient-to-br from-green-50 to-green-100 rounded-lg">
+                  <div className="text-2xl font-bold text-green-600">4.9</div>
+                  <div className="text-sm text-green-700">Avg Rating</div>
+                  <div className="text-xs text-green-600 mt-1">↑ 0.2 vs last month</div>
+                </div>
+                <div className="text-center p-4 bg-gradient-to-br from-purple-50 to-purple-100 rounded-lg">
+                  <div className="text-2xl font-bold text-purple-600">2.3 days</div>
+                  <div className="text-sm text-purple-700">Avg Response Time</div>
+                  <div className="text-xs text-purple-600 mt-1">↓ 0.5 days improved</div>
+                </div>
+                <div className="text-center p-4 bg-gradient-to-br from-orange-50 to-orange-100 rounded-lg">
+                  <div className="text-2xl font-bold text-orange-600">85%</div>
+                  <div className="text-sm text-orange-700">Booking Rate</div>
+                  <div className="text-xs text-orange-600 mt-1">↑ 12% vs last month</div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       )}
+
+      {/* Integrations Module */}
+      {activeModule === 'integrations' && (
+        <div className="space-y-6">
+          <div className="text-center mb-8">
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">Connect Your Business Tools</h2>
+            <p className="text-xl text-gray-600">Sync with your existing workflow to automate scheduling and optimize routes</p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="bg-white rounded-xl shadow-sm border p-6">
+              <div className="flex items-center gap-4 mb-4">
+                <div className="p-3 bg-blue-100 rounded-lg">
+                  <Calendar className="w-8 h-8 text-blue-600" />
+                </div>
+                <div className="flex-1">
+                  <h3 className="text-xl font-semibold text-gray-800">Google Calendar</h3>
+                  <p className="text-gray-600">Sync appointments and optimize routes automatically</p>
+                </div>
+                <div className={`px-3 py-1 rounded-full text-sm font-medium ${
+                  calendarSyncStatus === 'connected' 
+                    ? 'bg-green-100 text-green-700' 
+                    : 'bg-gray-100 text-gray-600'
+                }`}>
+                  {calendarSyncStatus === 'connected' ? 'Connected' : 'Not Connected'}
+                </div>
+              </div>
+              
+              <div className="space-y-3 mb-6">
+                <div className="flex items-center gap-3 text-sm text-gray-700">
+                  <CheckCircle className="w-4 h-4 text-green-500" />
+                  <span>Automatically import scheduled appointments</span>
+                </div>
+                <div className="flex items-center gap-3 text-sm text-gray-700">
+                  <CheckCircle className="w-4 h-4 text-green-500" />
+                  <span>Extract client addresses for route optimization</span>
+                </div>
+                <div className="flex items-center gap-3 text-sm text-gray-700">
+                  <CheckCircle className="w-4 h-4 text-green-500" />
+                  <span>Sync crew assignments and time windows</span>
+                </div>
+              </div>
+
+              {calendarSyncStatus === 'disconnected' && (
+                <button 
+                  onClick={() => {
+                    setCalendarSyncStatus('connecting');
+                    setTimeout(() => {
+                      setCalendarSyncStatus('connected');
+                    }, 2000);
+                  }}
+                  className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors"
+                >
+                  Connect Google Calendar
+                </button>
+              )}
+              
+              {calendarSyncStatus === 'connecting' && (
+                <div className="flex items-center justify-center py-3">
+                  <RefreshCw className="w-5 h-5 text-blue-600 animate-spin mr-2" />
+                  <span className="text-blue-600 font-medium">Connecting...</span>
+                </div>
+              )}
+              
+              {calendarSyncStatus === 'connected' && (
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between p-3 bg-green-50 rounded-lg">
+                    <span className="text-green-700 font-medium">Last sync: Just now</span>
+                    <span className="text-green-600 text-sm">24 appointments imported</span>
+                  </div>
+                  <button 
+                    onClick={() => setCalendarSyncStatus('disconnected')}
+                    className="w-full bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium py-2 px-4 rounded-lg transition-colors text-sm"
+                  >
+                    Disconnect
+                  </button>
+                </div>
+              )}
+            </div>
+
+            <div className="bg-white rounded-xl shadow-sm border p-6">
+              <div className="flex items-center gap-4 mb-4">
+                <div className="p-3 bg-red-100 rounded-lg">
+                  <MapPin className="w-8 h-8 text-red-600" />
+                </div>
+                <div className="flex-1">
+                  <h3 className="text-xl font-semibold text-gray-800">Google Maps</h3>
+                  <p className="text-gray-600">Real-time traffic and route optimization</p>
+                </div>
+                <div className="px-3 py-1 bg-green-100 text-green-700 rounded-full text-sm font-medium">
+                  Connected
+                </div>
+              </div>
+              
+              <div className="space-y-3 mb-6">
+                <div className="flex items-center gap-3 text-sm text-gray-700">
+                  <CheckCircle className="w-4 h-4 text-green-500" />
+                  <span>Real-time traffic data for route planning</span>
+                </div>
+                <div className="flex items-center gap-3 text-sm text-gray-700">
+                  <CheckCircle className="w-4 h-4 text-green-500" />
+                  <span>Accurate drive time estimates</span>
+                </div>
+                <div className="flex items-center gap-3 text-sm text-gray-700">
+                  <CheckCircle className="w-4 h-4 text-green-500" />
+                  <span>Alternative route suggestions</span>
+                </div>
+              </div>
+
+              <div className="p-3 bg-green-50 rounded-lg">
+                <span className="text-green-700 font-medium text-sm">Status: Active & Optimizing Routes</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Success Stories Module */}
       {activeModule === 'success' && (
         <div className="space-y-8">
           <div className="text-center">
