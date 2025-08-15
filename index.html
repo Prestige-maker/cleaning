@@ -5,7 +5,6 @@ import {
   Plus, RefreshCw, Bot, Palette, Globe, Code
 } from 'lucide-react';
 
-// Main App Component
 export default function CleanBusinessPro() {
   const [isPremium, setIsPremium] = useState(false);
   const [activeModule, setActiveModule] = useState('dashboard');
@@ -43,12 +42,6 @@ export default function CleanBusinessPro() {
     { id: 'basement', name: 'Basement Cleaning', price: 50 },
     { id: 'garage', name: 'Garage Cleaning', price: 40 },
     { id: 'cabinets', name: 'Inside Cabinets', price: 35 }
-  ];
-
-  const crews = [
-    { id: 1, name: 'Team Alpha', members: ['Sarah', 'Maria'], color: '#3B82F6' },
-    { id: 2, name: 'Team Beta', members: ['Lisa', 'Ana', 'Carmen'], color: '#10B981' },
-    { id: 3, name: 'Team Gamma', members: ['Rosa', 'Elena'], color: '#8B5CF6' }
   ];
 
   const revenueData = {
@@ -100,22 +93,6 @@ export default function CleanBusinessPro() {
         "Hired 2 additional crew members",
         "Automated 90% of administrative tasks"
       ]
-    },
-    {
-      name: "Lisa Chen",
-      business: "Premium Home Care", 
-      location: "San Francisco, CA",
-      image: "👩‍🦱",
-      beforeRevenue: 8900,
-      afterRevenue: 16800,
-      timesSaved: "25 hours/week",
-      quote: "I was skeptical about $50/month, but I made that back in fuel savings alone in the first week. Best investment ever!",
-      results: [
-        "Doubled team size from 2 to 4 cleaners",
-        "Reduced fuel costs by $340/month",
-        "Increased client retention to 95%",
-        "Launched premium service tier"
-      ]
     }
   ];
 
@@ -152,21 +129,6 @@ export default function CleanBusinessPro() {
         'Weekly Schedule Planning',
         'Competitive Intelligence',
         'Priority support'
-      ]
-    },
-    {
-      id: 'enterprise',
-      name: 'Enterprise Plan',
-      price: 750,
-      period: 'per month',
-      features: [
-        'Everything in Pro',
-        'Fully Custom AI Website',
-        'Professional setup & design',
-        '24/7 dedicated support',
-        'Personal account representative',
-        'Multi-location management',
-        'Monthly strategy calls'
       ]
     }
   ];
@@ -385,7 +347,7 @@ export default function CleanBusinessPro() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             <MetricCard
               title="Monthly Revenue"
-              value={`${revenueData.current.revenue.toLocaleString()}`}
+              value={`$${revenueData.current.revenue.toLocaleString()}`}
               change={revenueData.current.growth}
               icon={DollarSign}
               color="green"
@@ -399,7 +361,7 @@ export default function CleanBusinessPro() {
             />
             <MetricCard
               title="Active Crews"
-              value={crews.length}
+              value={3}
               icon={Users}
               color="purple"
             />
@@ -577,32 +539,6 @@ export default function CleanBusinessPro() {
                 </div>
                 <div className="p-6 space-y-4">
                   <div>
-                    <label className="block text-sm font-semibold text-gray-700 mb-2">Property Type</label>
-                    <div className="grid grid-cols-2 gap-3">
-                      <button
-                        onClick={() => setQuoteFormData({...quoteFormData, propertyType: 'residential'})}
-                        className={`p-3 rounded-lg border-2 transition-all ${
-                          quoteFormData.propertyType === 'residential' 
-                            ? 'border-blue-500 bg-blue-50 text-blue-700' 
-                            : 'border-gray-200'
-                        }`}
-                      >
-                        Residential
-                      </button>
-                      <button
-                        onClick={() => setQuoteFormData({...quoteFormData, propertyType: 'commercial'})}
-                        className={`p-3 rounded-lg border-2 transition-all ${
-                          quoteFormData.propertyType === 'commercial' 
-                            ? 'border-blue-500 bg-blue-50 text-blue-700' 
-                            : 'border-gray-200'
-                        }`}
-                      >
-                        Commercial
-                      </button>
-                    </div>
-                  </div>
-                  
-                  <div>
                     <label className="block text-sm font-semibold text-gray-700 mb-2">Square Footage</label>
                     <input
                       type="number"
@@ -640,46 +576,6 @@ export default function CleanBusinessPro() {
                       <option value="monthly">Monthly</option>
                     </select>
                   </div>
-
-                  <div>
-                    <label className="block text-sm font-semibold text-gray-700 mb-3">Property Details</label>
-                    <label className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg cursor-pointer">
-                      <input
-                        type="checkbox"
-                        checked={quoteFormData.hasPets}
-                        onChange={(e) => setQuoteFormData({...quoteFormData, hasPets: e.target.checked})}
-                        className="w-4 h-4 text-blue-600 rounded focus:ring-blue-500"
-                      />
-                      <span className="flex-1 text-sm font-medium">Property has pets</span>
-                      {quoteFormData.hasPets && (
-                        <span className="text-xs text-orange-600 font-medium">+5% surcharge</span>
-                      )}
-                    </label>
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-semibold text-gray-700 mb-3">Add-On Services</label>
-                    <div className="space-y-2 max-h-48 overflow-y-auto">
-                      {addOnServices.map(service => (
-                        <label key={service.id} className="flex items-center gap-3 p-3 hover:bg-gray-50 rounded-lg cursor-pointer">
-                          <input
-                            type="checkbox"
-                            checked={quoteFormData.addOns.includes(service.id)}
-                            onChange={(e) => {
-                              if (e.target.checked) {
-                                setQuoteFormData({...quoteFormData, addOns: [...quoteFormData.addOns, service.id]});
-                              } else {
-                                setQuoteFormData({...quoteFormData, addOns: quoteFormData.addOns.filter(id => id !== service.id)});
-                              }
-                            }}
-                            className="w-4 h-4 text-blue-600 rounded focus:ring-blue-500"
-                          />
-                          <span className="flex-1 text-sm">{service.name}</span>
-                          <span className="font-medium text-gray-700 text-sm">+${service.price}</span>
-                        </label>
-                      ))}
-                    </div>
-                  </div>
                 </div>
               </div>
 
@@ -693,32 +589,6 @@ export default function CleanBusinessPro() {
                       <div className="text-center mb-4">
                         <div className="text-5xl font-bold text-green-600 mb-2">${quote}</div>
                         <p className="text-gray-600">Professional cleaning service</p>
-                        {quoteFormData.frequency !== 'one-time' && (
-                          <p className="text-sm text-green-600 mt-1">
-                            ✅ Recurring discount applied!
-                          </p>
-                        )}
-                      </div>
-                      
-                      <div className="space-y-2 mb-6">
-                        <div className="flex justify-between">
-                          <span className="text-gray-600">Service Type:</span>
-                          <span className="font-medium capitalize">{quoteFormData.serviceType.replace('-', ' ')}</span>
-                        </div>
-                        <div className="flex justify-between">
-                          <span className="text-gray-600">Property Size:</span>
-                          <span className="font-medium">{quoteFormData.squareFootage} sqft</span>
-                        </div>
-                        <div className="flex justify-between">
-                          <span className="text-gray-600">Frequency:</span>
-                          <span className="font-medium capitalize">{quoteFormData.frequency.replace('-', ' ')}</span>
-                        </div>
-                        {quoteFormData.addOns.length > 0 && (
-                          <div className="flex justify-between">
-                            <span className="text-gray-600">Add-ons:</span>
-                            <span className="font-medium">{quoteFormData.addOns.length} selected</span>
-                          </div>
-                        )}
                       </div>
                       
                       <button className="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors">
@@ -740,211 +610,32 @@ export default function CleanBusinessPro() {
 
       {/* Route Optimizer Module */}
       {activeModule === 'routes' && (
-        <div className="space-y-6">
-          <div className="bg-white rounded-xl p-6 shadow-sm border">
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="text-lg font-semibold text-gray-800">Route Optimizer</h3>
-              <div className="flex items-center gap-3">
-                {calendarSyncStatus === 'connected' && (
-                  <div className="flex items-center gap-2 px-3 py-1 bg-green-100 text-green-700 rounded-full text-sm">
-                    <CheckCircle className="w-4 h-4" />
-                    Google Calendar Synced
-                  </div>
-                )}
-                <div className="flex gap-2">
-                  <button
-                    onClick={() => setSelectedView('daily')}
-                    className={`px-4 py-2 rounded-lg text-sm font-medium ${
-                      selectedView === 'daily' ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-700'
-                    }`}
-                  >
-                    Daily View
-                  </button>
-                  <button
-                    onClick={() => setSelectedView('weekly')}
-                    className={`px-4 py-2 rounded-lg text-sm font-medium ${
-                      selectedView === 'weekly' ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-700'
-                    }`}
-                  >
-                    Weekly View
-                  </button>
-                </div>
+        <PremiumFeatureOverlay feature="AI-powered route optimization with Google Calendar sync">
+          <div className="bg-white rounded-xl shadow-sm border p-6">
+            <h3 className="text-lg font-semibold text-gray-800 mb-4">Route Optimizer</h3>
+            <div className="h-64 bg-gradient-to-br from-blue-100 to-green-100 rounded-lg flex items-center justify-center">
+              <div className="text-center">
+                <MapPin className="w-12 h-12 text-gray-500 mx-auto mb-2" />
+                <p className="text-gray-600">AI-powered route optimization coming soon</p>
               </div>
             </div>
-            
-            {calendarSyncStatus === 'disconnected' && (
-              <div className="mb-4 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
-                <div className="flex items-center gap-2 mb-2">
-                  <Calendar className="w-5 h-5 text-yellow-600" />
-                  <h4 className="font-medium text-yellow-800">Connect Your Calendar</h4>
-                </div>
-                <p className="text-sm text-yellow-700 mb-3">
-                  Sync with Google Calendar to automatically import your appointments and optimize routes based on real bookings.
-                </p>
-                <button 
-                  onClick={() => setActiveModule('integrations')}
-                  className="px-4 py-2 bg-yellow-600 text-white rounded-lg hover:bg-yellow-700 text-sm font-medium"
-                >
-                  Connect Google Calendar
-                </button>
-              </div>
-            )}
           </div>
-
-          <PremiumFeatureOverlay feature="AI-powered route optimization with Google Calendar sync and real-time traffic data">
-            <div className="bg-white rounded-xl shadow-sm border">
-              <div className="p-6">
-                <div className="mb-4 p-3 bg-blue-50 rounded-lg">
-                  <p className="text-sm text-blue-700">
-                    📅 <strong>Demo Mode</strong> - Connect Google Calendar to see your real appointments
-                  </p>
-                </div>
-                
-                <div className="h-64 bg-gradient-to-br from-blue-100 to-green-100 rounded-lg flex items-center justify-center mb-6">
-                  <div className="text-center">
-                    <MapPin className="w-12 h-12 text-gray-500 mx-auto mb-2" />
-                    <p className="text-gray-600">Interactive route map with optimized stops</p>
-                    <p className="text-sm text-yellow-600 mt-1">Connect calendar for real addresses</p>
-                  </div>
-                </div>
-                
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
-                  <div className="bg-gray-50 p-3 rounded-lg">
-                    <span className="text-gray-600">Weekly Drive Time:</span>
-                    <div className="font-semibold text-gray-800">6.2 hours</div>
-                    <div className="text-green-600 text-xs">-2.3h optimized</div>
-                  </div>
-                  <div className="bg-gray-50 p-3 rounded-lg">
-                    <span className="text-gray-600">Fuel Savings:</span>
-                    <div className="font-semibold text-gray-800">$89</div>
-                    <div className="text-green-600 text-xs">vs unoptimized</div>
-                  </div>
-                  <div className="bg-gray-50 p-3 rounded-lg">
-                    <span className="text-gray-600">Zone Clustering:</span>
-                    <div className="font-semibold text-gray-800">94% efficient</div>
-                    <div className="text-blue-600 text-xs">by neighborhood</div>
-                  </div>
-                  <div className="bg-gray-50 p-3 rounded-lg">
-                    <span className="text-gray-600">Extra Jobs Possible:</span>
-                    <div className="font-semibold text-gray-800">3-4 more</div>
-                    <div className="text-purple-600 text-xs">time saved</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </PremiumFeatureOverlay>
-        </div>
+        </PremiumFeatureOverlay>
       )}
 
       {/* Market Analysis Module */}
       {activeModule === 'competitive' && (
-        <div className="space-y-6">
-          <div className="bg-white rounded-xl p-6 shadow-sm border">
-            <h3 className="text-lg font-semibold text-gray-800 mb-4">Market Analysis by Zip Code</h3>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Target Zip Code</label>
-                <input
-                  type="text"
-                  value={marketZipCode}
-                  onChange={(e) => setMarketZipCode(e.target.value)}
-                  placeholder="19102"
-                  className="border border-gray-300 rounded-lg px-3 py-2 text-sm w-full"
-                />
-              </div>
-              
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Search Radius</label>
-                <select
-                  value={marketRadius}
-                  onChange={(e) => setMarketRadius(e.target.value)}
-                  className="border border-gray-300 rounded-lg px-3 py-2 text-sm w-full"
-                >
-                  <option value="1">1 mile</option>
-                  <option value="3">3 miles</option>
-                  <option value="5">5 miles</option>
-                  <option value="10">10 miles</option>
-                </select>
-              </div>
-
-              <div className="flex items-end">
-                <button className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 w-full justify-center">
-                  <Search className="w-4 h-4" />
-                  Analyze Market
-                </button>
+        <PremiumFeatureOverlay feature="Advanced competitive intelligence with real-time pricing">
+          <div className="bg-white rounded-xl shadow-sm border p-6">
+            <h3 className="text-lg font-semibold text-gray-800 mb-4">Market Analysis</h3>
+            <div className="h-64 bg-gradient-to-br from-orange-100 to-red-100 rounded-lg flex items-center justify-center">
+              <div className="text-center">
+                <Target className="w-12 h-12 text-gray-500 mx-auto mb-2" />
+                <p className="text-gray-600">Competitive analysis and market insights</p>
               </div>
             </div>
           </div>
-
-          <PremiumFeatureOverlay feature="Advanced competitive intelligence with real-time pricing and market trends by zip code">
-            <div className="bg-white rounded-xl shadow-sm border">
-              <div className="p-6 border-b border-gray-100">
-                <h3 className="text-lg font-semibold text-gray-800">Competitors in {marketZipCode}</h3>
-              </div>
-              <div className="overflow-x-auto">
-                <table className="w-full">
-                  <thead className="bg-gray-50">
-                    <tr>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Company</th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Distance</th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Medium Home</th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Reviews</th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-gray-200">
-                    <tr className="bg-blue-50">
-                      <td className="px-6 py-4">
-                        <div className="font-medium text-blue-800">Your Company</div>
-                      </td>
-                      <td className="px-6 py-4 text-blue-800 font-semibold">0.0 mi</td>
-                      <td className="px-6 py-4 text-blue-800 font-semibold">$170</td>
-                      <td className="px-6 py-4 text-blue-800 font-semibold">4.8 ⭐</td>
-                    </tr>
-                    <tr className="hover:bg-gray-50">
-                      <td className="px-6 py-4">
-                        <div className="font-medium text-gray-900">CleanPro Philadelphia</div>
-                        <div className="text-sm text-gray-500">Center City</div>
-                      </td>
-                      <td className="px-6 py-4 text-sm text-gray-900">0.3 mi</td>
-                      <td className="px-6 py-4 text-sm text-gray-900">$150</td>
-                      <td className="px-6 py-4 text-sm text-gray-900">4.8 ⭐ (342)</td>
-                    </tr>
-                    <tr className="hover:bg-gray-50">
-                      <td className="px-6 py-4">
-                        <div className="font-medium text-gray-900">Philly Maid Service</div>
-                        <div className="text-sm text-gray-500">Rittenhouse Square</div>
-                      </td>
-                      <td className="px-6 py-4 text-sm text-gray-900">0.8 mi</td>
-                      <td className="px-6 py-4 text-sm text-gray-900">$165</td>
-                      <td className="px-6 py-4 text-sm text-gray-900">4.6 ⭐ (198)</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-              
-              <div className="p-6 bg-gray-50">
-                <h4 className="font-semibold text-gray-800 mb-3">Market Insights for {marketZipCode}:</h4>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
-                  <div className="bg-white p-3 rounded-lg">
-                    <div className="text-gray-600">Avg Market Price:</div>
-                    <div className="text-xl font-bold text-gray-800">$158</div>
-                    <div className="text-green-600 text-xs">You're +7.6% above</div>
-                  </div>
-                  <div className="bg-white p-3 rounded-lg">
-                    <div className="text-gray-600">Market Demand:</div>
-                    <div className="text-xl font-bold text-gray-800">High</div>
-                    <div className="text-blue-600 text-xs">85% booking rate</div>
-                  </div>
-                  <div className="bg-white p-3 rounded-lg">
-                    <div className="text-gray-600">Growth Opportunity:</div>
-                    <div className="text-xl font-bold text-gray-800">Strong</div>
-                    <div className="text-purple-600 text-xs">3 new entrants/month</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </PremiumFeatureOverlay>
-        </div>
+        </PremiumFeatureOverlay>
       )}
 
       {/* Revenue Analytics Module */}
@@ -981,73 +672,116 @@ export default function CleanBusinessPro() {
             />
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <div className="bg-white rounded-xl shadow-sm border">
-              <div className="p-6 border-b border-gray-100">
-                <h3 className="text-lg font-semibold text-gray-800">Monthly Revenue Trend</h3>
-              </div>
-              <div className="p-6">
-                <SimpleChart data={revenueData.monthly} color="#10B981" />
-                <div className="mt-4 p-3 bg-green-50 rounded-lg">
-                  <p className="text-sm text-green-700">
-                    📈 <strong>+15.2% growth</strong> this month. Exceeding projections!
-                  </p>
-                </div>
-              </div>
+          <div className="bg-white rounded-xl shadow-sm border">
+            <div className="p-6 border-b border-gray-100">
+              <h3 className="text-lg font-semibold text-gray-800">Monthly Revenue Trend</h3>
             </div>
+            <div className="p-6">
+              <SimpleChart data={revenueData.monthly} color="#10B981" />
+            </div>
+          </div>
+        </div>
+      )}
 
-            <div className="bg-white rounded-xl shadow-sm border">
-              <div className="p-6 border-b border-gray-100">
-                <h3 className="text-lg font-semibold text-gray-800">Revenue Breakdown</h3>
+      {/* Success Stories Module */}
+      {activeModule === 'success' && (
+        <div className="space-y-8">
+          <div className="text-center">
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">Real Results from Real Cleaners</h2>
+            <p className="text-xl text-gray-600 mb-8">Join 2,500+ cleaning professionals who've transformed their businesses</p>
+            
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
+              <div className="bg-green-100 rounded-xl p-6">
+                <div className="text-3xl font-bold text-green-600">340%</div>
+                <div className="text-green-700 font-medium">Average ROI</div>
+                <div className="text-sm text-green-600">First month</div>
               </div>
-              <div className="p-6">
-                <div className="space-y-4">
-                  <div className="flex justify-between items-center p-3 bg-blue-50 rounded-lg">
-                    <span className="text-blue-700 font-medium">Residential Cleaning</span>
-                    <span className="text-blue-800 font-bold">$38,240 (73%)</span>
-                  </div>
-                  <div className="flex justify-between items-center p-3 bg-green-50 rounded-lg">
-                    <span className="text-green-700 font-medium">Commercial Cleaning</span>
-                    <span className="text-green-800 font-bold">$10,460 (20%)</span>
-                  </div>
-                  <div className="flex justify-between items-center p-3 bg-purple-50 rounded-lg">
-                    <span className="text-purple-700 font-medium">Deep Cleaning</span>
-                    <span className="text-purple-800 font-bold">$2,620 (5%)</span>
-                  </div>
-                  <div className="flex justify-between items-center p-3 bg-orange-50 rounded-lg">
-                    <span className="text-orange-700 font-medium">Add-on Services</span>
-                    <span className="text-orange-800 font-bold">$1,020 (2%)</span>
-                  </div>
-                </div>
+              <div className="bg-blue-100 rounded-xl p-6">
+                <div className="text-3xl font-bold text-blue-600">18.5hrs</div>
+                <div className="text-blue-700 font-medium">Time Saved</div>
+                <div className="text-sm text-blue-600">Per week average</div>
+              </div>
+              <div className="bg-purple-100 rounded-xl p-6">
+                <div className="text-3xl font-bold text-purple-600">89%</div>
+                <div className="text-purple-700 font-medium">Revenue Increase</div>
+                <div className="text-sm text-purple-600">Within 6 months</div>
+              </div>
+              <div className="bg-orange-100 rounded-xl p-6">
+                <div className="text-3xl font-bold text-orange-600">2,500+</div>
+                <div className="text-orange-700 font-medium">Happy Users</div>
+                <div className="text-sm text-orange-600">And growing</div>
               </div>
             </div>
           </div>
 
-          <div className="bg-white rounded-xl shadow-sm border">
-            <div className="p-6 border-b border-gray-100">
-              <h3 className="text-lg font-semibold text-gray-800">Performance Insights</h3>
-            </div>
-            <div className="p-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                <div className="text-center p-4 bg-gradient-to-br from-blue-50 to-blue-100 rounded-lg">
-                  <div className="text-2xl font-bold text-blue-600">98.5%</div>
-                  <div className="text-sm text-blue-700">Client Retention</div>
-                  <div className="text-xs text-blue-600 mt-1">↑ 2.1% vs last month</div>
+          <div className="bg-white rounded-xl shadow-lg border">
+            <div className="p-8">
+              <div className="flex items-center justify-between mb-6">
+                <h3 className="text-2xl font-bold text-gray-800">Success Stories</h3>
+                <div className="flex gap-2">
+                  {successStories.map((_, index) => (
+                    <button
+                      key={index}
+                      onClick={() => setSelectedStory(index)}
+                      className={`w-3 h-3 rounded-full transition-all ${
+                        selectedStory === index ? 'bg-blue-600' : 'bg-gray-300'
+                      }`}
+                    />
+                  ))}
                 </div>
-                <div className="text-center p-4 bg-gradient-to-br from-green-50 to-green-100 rounded-lg">
-                  <div className="text-2xl font-bold text-green-600">4.9</div>
-                  <div className="text-sm text-green-700">Avg Rating</div>
-                  <div className="text-xs text-green-600 mt-1">↑ 0.2 vs last month</div>
+              </div>
+              
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <div>
+                  <div className="flex items-center gap-4 mb-6">
+                    <div className="text-6xl">{successStories[selectedStory].image}</div>
+                    <div>
+                      <h4 className="text-2xl font-bold text-gray-800">{successStories[selectedStory].name}</h4>
+                      <p className="text-lg text-gray-600">{successStories[selectedStory].business}</p>
+                      <p className="text-sm text-gray-500">{successStories[selectedStory].location}</p>
+                    </div>
+                  </div>
+                  
+                  <blockquote className="text-lg text-gray-700 italic mb-6 leading-relaxed">
+                    "{successStories[selectedStory].quote}"
+                  </blockquote>
+                  
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="bg-red-50 p-4 rounded-lg">
+                      <div className="text-sm text-red-600 font-medium">BEFORE</div>
+                      <div className="text-2xl font-bold text-red-700">
+                        ${successStories[selectedStory].beforeRevenue.toLocaleString()}
+                      </div>
+                      <div className="text-sm text-red-600">monthly revenue</div>
+                    </div>
+                    <div className="bg-green-50 p-4 rounded-lg">
+                      <div className="text-sm text-green-600 font-medium">AFTER</div>
+                      <div className="text-2xl font-bold text-green-700">
+                        ${successStories[selectedStory].afterRevenue.toLocaleString()}
+                      </div>
+                      <div className="text-sm text-green-600">monthly revenue</div>
+                    </div>
+                  </div>
                 </div>
-                <div className="text-center p-4 bg-gradient-to-br from-purple-50 to-purple-100 rounded-lg">
-                  <div className="text-2xl font-bold text-purple-600">2.3 days</div>
-                  <div className="text-sm text-purple-700">Avg Response Time</div>
-                  <div className="text-xs text-purple-600 mt-1">↓ 0.5 days improved</div>
-                </div>
-                <div className="text-center p-4 bg-gradient-to-br from-orange-50 to-orange-100 rounded-lg">
-                  <div className="text-2xl font-bold text-orange-600">85%</div>
-                  <div className="text-sm text-orange-700">Booking Rate</div>
-                  <div className="text-xs text-orange-600 mt-1">↑ 12% vs last month</div>
+                
+                <div>
+                  <h5 className="text-xl font-bold text-gray-800 mb-4">Key Results:</h5>
+                  <ul className="space-y-3">
+                    {successStories[selectedStory].results.map((result, index) => (
+                      <li key={index} className="flex items-start gap-3">
+                        <CheckCircle className="w-6 h-6 text-green-500 flex-shrink-0 mt-0.5" />
+                        <span className="text-gray-700">{result}</span>
+                      </li>
+                    ))}
+                  </ul>
+                  
+                  <div className="mt-6 p-4 bg-blue-50 rounded-lg">
+                    <div className="text-sm text-blue-600 font-medium">TIME SAVED</div>
+                    <div className="text-3xl font-bold text-blue-700">
+                      {successStories[selectedStory].timesSaved}
+                    </div>
+                    <div className="text-sm text-blue-600">More time for family & growth</div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -1171,112 +905,6 @@ export default function CleanBusinessPro() {
         </div>
       )}
 
-      {/* Success Stories Module */}
-      {activeModule === 'success' && (
-        <div className="space-y-8">
-          <div className="text-center">
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">Real Results from Real Cleaners</h2>
-            <p className="text-xl text-gray-600 mb-8">Join 2,500+ cleaning professionals who've transformed their businesses</p>
-            
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
-              <div className="bg-green-100 rounded-xl p-6">
-                <div className="text-3xl font-bold text-green-600">340%</div>
-                <div className="text-green-700 font-medium">Average ROI</div>
-                <div className="text-sm text-green-600">First month</div>
-              </div>
-              <div className="bg-blue-100 rounded-xl p-6">
-                <div className="text-3xl font-bold text-blue-600">18.5hrs</div>
-                <div className="text-blue-700 font-medium">Time Saved</div>
-                <div className="text-sm text-blue-600">Per week average</div>
-              </div>
-              <div className="bg-purple-100 rounded-xl p-6">
-                <div className="text-3xl font-bold text-purple-600">89%</div>
-                <div className="text-purple-700 font-medium">Revenue Increase</div>
-                <div className="text-sm text-purple-600">Within 6 months</div>
-              </div>
-              <div className="bg-orange-100 rounded-xl p-6">
-                <div className="text-3xl font-bold text-orange-600">2,500+</div>
-                <div className="text-orange-700 font-medium">Happy Users</div>
-                <div className="text-sm text-orange-600">And growing</div>
-              </div>
-            </div>
-          </div>
-
-          <div className="bg-white rounded-xl shadow-lg border">
-            <div className="p-8">
-              <div className="flex items-center justify-between mb-6">
-                <h3 className="text-2xl font-bold text-gray-800">Success Stories</h3>
-                <div className="flex gap-2">
-                  {successStories.map((_, index) => (
-                    <button
-                      key={index}
-                      onClick={() => setSelectedStory(index)}
-                      className={`w-3 h-3 rounded-full transition-all ${
-                        selectedStory === index ? 'bg-blue-600' : 'bg-gray-300'
-                      }`}
-                    />
-                  ))}
-                </div>
-              </div>
-              
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                <div>
-                  <div className="flex items-center gap-4 mb-6">
-                    <div className="text-6xl">{successStories[selectedStory].image}</div>
-                    <div>
-                      <h4 className="text-2xl font-bold text-gray-800">{successStories[selectedStory].name}</h4>
-                      <p className="text-lg text-gray-600">{successStories[selectedStory].business}</p>
-                      <p className="text-sm text-gray-500">{successStories[selectedStory].location}</p>
-                    </div>
-                  </div>
-                  
-                  <blockquote className="text-lg text-gray-700 italic mb-6 leading-relaxed">
-                    "{successStories[selectedStory].quote}"
-                  </blockquote>
-                  
-                  <div className="grid grid-cols-2 gap-4">
-                    <div className="bg-red-50 p-4 rounded-lg">
-                      <div className="text-sm text-red-600 font-medium">BEFORE</div>
-                      <div className="text-2xl font-bold text-red-700">
-                        ${successStories[selectedStory].beforeRevenue.toLocaleString()}
-                      </div>
-                      <div className="text-sm text-red-600">monthly revenue</div>
-                    </div>
-                    <div className="bg-green-50 p-4 rounded-lg">
-                      <div className="text-sm text-green-600 font-medium">AFTER</div>
-                      <div className="text-2xl font-bold text-green-700">
-                        ${successStories[selectedStory].afterRevenue.toLocaleString()}
-                      </div>
-                      <div className="text-sm text-green-600">monthly revenue</div>
-                    </div>
-                  </div>
-                </div>
-                
-                <div>
-                  <h5 className="text-xl font-bold text-gray-800 mb-4">Key Results:</h5>
-                  <ul className="space-y-3">
-                    {successStories[selectedStory].results.map((result, index) => (
-                      <li key={index} className="flex items-start gap-3">
-                        <CheckCircle className="w-6 h-6 text-green-500 flex-shrink-0 mt-0.5" />
-                        <span className="text-gray-700">{result}</span>
-                      </li>
-                    ))}
-                  </ul>
-                  
-                  <div className="mt-6 p-4 bg-blue-50 rounded-lg">
-                    <div className="text-sm text-blue-600 font-medium">TIME SAVED</div>
-                    <div className="text-3xl font-bold text-blue-700">
-                      {successStories[selectedStory].timesSaved}
-                    </div>
-                    <div className="text-sm text-blue-600">More time for family & growth</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
-
       {/* Pricing Plans Module */}
       {activeModule === 'pricing' && (
         <div className="space-y-8">
@@ -1285,7 +913,7 @@ export default function CleanBusinessPro() {
             <p className="text-xl text-gray-600 mb-8">Scale your cleaning business with the right tools</p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {pricingTiers.map((tier) => (
               <div key={tier.id} className={`bg-white rounded-2xl shadow-lg border-2 ${
                 tier.popular ? 'border-blue-500 transform scale-105' : 'border-gray-200'
